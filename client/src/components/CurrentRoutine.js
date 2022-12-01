@@ -12,6 +12,7 @@ const CurrentRoutine=()=>{
             setRoutine(data.data[0]);
         })
     }, [])
+    
     return(
         <Container>
             {routine?.Cleanser&&

@@ -3,7 +3,7 @@ import ProductMenuItem from "./ProductMenuItem";
 import { useEffect, useState } from "react";
 import {RiArrowDropDownLine} from "react-icons/ri";
 import { NavLink,useNavigate } from "react-router-dom";
-
+import LogOutButton from "./LogOutButton";
 const ProductMenu =()=>{
     const [sidebar1,setSidebar1]=useState(false);
     const [sidebar2,setSidebar2]=useState(false);
@@ -32,6 +32,7 @@ const ProductMenu =()=>{
     return(
         <Container>
             <SideBarItem>
+            <MainTitle>SkinExpert</MainTitle>
             <Title to="/home">Profile</Title>
             <Title to="/products">Products</Title>
             <SideBarTitle  className="sidebar-title" onClick={handleClick}>
@@ -39,30 +40,33 @@ const ProductMenu =()=>{
                 <ArrowSpan><RiArrowDropDownLine/></ArrowSpan>
             </SideBarTitle>
             <SideBarContent style={{display:sidebar1?"flex":"none"}}>
-                <StyledLink to="/products/type/moisturizing-cream-oils-mists">Moisturizers</StyledLink>
-                <StyledLink to="/products/type/cleanser">Cleansers</StyledLink>
-                <StyledLink to="/products/type/facial-treatments">Treatments</StyledLink>
-                <StyledLink to="/products/type/facial-treatment-masks">Masks</StyledLink>
-                <StyledLink to="/products/type/eye-treatment-dark-circle-treatment">Eye Care</StyledLink>
-                <StyledLink to="/products/type/lip-treatments">Lip Care</StyledLink>
-                <StyledLink to="/products/type/sunscreen-sun-protection">Sun Care</StyledLink>
+                <StyledLink href="/products/type/moisturizing-cream-oils-mists">Moisturizers</StyledLink>
+                <StyledLink href="/products/type/cleanser">Cleansers</StyledLink>
+                <StyledLink href="/products/type/facial-treatments">Treatments</StyledLink>
+                <StyledLink href="/products/type/facial-treatment-masks">Masks</StyledLink>
+                <StyledLink href="/products/type/eye-treatment-dark-circle-treatment">Eye Care</StyledLink>
+                <StyledLink href="/products/type/lip-treatments">Lip Care</StyledLink>
+                <StyledLink href="/products/type/sunscreen-sun-protection">Sun Care</StyledLink>
             </SideBarContent>
             <SideBarTitle  className="sidebar-title" onClick={handleClick2}>
                 <StyledSpan>Skin Concern</StyledSpan>
                 <ArrowSpan><RiArrowDropDownLine/></ArrowSpan>
             </SideBarTitle>
             <SideBarContent style={{display:sidebar2?"flex":"none"}}>
-                <StyledLink to="/products/concern/Acne">Acne</StyledLink>
-                <StyledLink to="/products/concern/Pores">Pores</StyledLink>
-                <StyledLink to="/products/concern/Signs of Aging">Signs of Aging</StyledLink>
-                <StyledLink to="/products/concern/Dark Spots">Dark Spots</StyledLink>
-                <StyledLink to="/products/concern/Fine Lines and Wrinkles">Fine Lines and Wrinkles</StyledLink>
-                <StyledLink to="/products/concern/Dullness">Dullness</StyledLink>
-                <StyledLink to="/products/concern/Dark Circles">Dark Circles</StyledLink>
-                <StyledLink to="/products/concern/Redness">Redness</StyledLink>
+                <StyledLink href="/products/concern/Acne">Acne</StyledLink>
+                <StyledLink href="/products/concern/Pores">Pores</StyledLink>
+                <StyledLink href="/products/concern/Signs of Aging">Signs of Aging</StyledLink>
+                <StyledLink href="/products/concern/Dark Spots">Dark Spots</StyledLink>
+                <StyledLink href="/products/concern/Fine Lines and Wrinkles">Fine Lines and Wrinkles</StyledLink>
+                <StyledLink href="/products/concern/Dullness">Dullness</StyledLink>
+                <StyledLink href="/products/concern/Puffy Eyes">Puffy Eyes</StyledLink>
+                <StyledLink href="/products/concern/Redness">Redness</StyledLink>
+                <StyledLink href="/products/concern/Dryness">Dryness</StyledLink>
+                <StyledLink href="/products/concern/Hyperpigmentation">Hyperpigmentation</StyledLink>
             </SideBarContent>
-            <StyledNavLink to="/brands">Brands</StyledNavLink>
+            <StyledNavLink href="/brands">Brands</StyledNavLink>
             <Title to="/community">Community</Title>
+            <LogOutButton/>
         </SideBarItem>
         </Container>
     )
@@ -74,9 +78,8 @@ justify-content: space-between;
 height:100vh;
 width:200px;
 padding-right:10px ;
-padding-top: 100px;
 flex-shrink: 0;
-background-color: aliceblue;
+background-color: #edf2fb;
 overflow: auto;
 
 `
@@ -97,8 +100,6 @@ cursor: pointer;
 }
 `
 const ArrowSpan =styled.span`
-/* transition: transform .3s;
-transform: rotate(180deg); */
 `
 const StyledSpan =styled.span`
 display: inline-block;
@@ -109,10 +110,10 @@ const SideBarContent =styled.div`
 flex-direction: column;
 padding-top:.25em;
 `
-const StyledLink =styled(NavLink)`
+const StyledLink =styled.a`
 text-decoration: none;
 `
-const StyledNavLink =styled(NavLink)`
+const StyledNavLink =styled.a`
 text-decoration: none;
 font-size: 15px;
 &:hover{
@@ -125,5 +126,11 @@ margin:0;
 padding:0;
 text-decoration: none;
 color:black;
+`
+const MainTitle= styled.h1`
+font-size: 30px;
+font-family: serif;
+color: #abc4ff;
+padding-bottom: 50px;
 `
 export default ProductMenu;

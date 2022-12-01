@@ -10,17 +10,29 @@ import Community from "./components/Community";
 import Brands from "./components/Brands";
 import ProductFilterBrand from "./components/ProductFilterBrand";
 import { UserContext } from "./UserContext";
-import { useState } from "react";
+import { useState,useEffect,useContext } from "react";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from 'react-dnd-html5-backend';
+import EditProfile from "./components/EditProfile";
+import {useAuth0} from "@auth0/auth0-react";
 const App=()=> {
-  const [activeUser,setActiveUser]=useState(null);
+  const {user,isAuthenticated, isLoading}=useAuth0(); 
+  const {users,setUsers, activeUser,setActiveUser}=useContext(UserContext);
+  useEffect(() => {
+    if(isAuthenticated){
+    fetch(`/users/${user.name}`)
+    // fetch('users/null')
+    .then((res) => res.json())
+    .then((data) => {
+        setActiveUser(data.data[0].name);
+        setUsers(data.data[0]);
+    })
+  }
+}, [isAuthenticated])
   return (
     <BrowserRouter>
-     
-    <UserContext.Provider value={{activeUser,setActiveUser}}>
       <DndProvider backend={HTML5Backend}>
-        <Routes>
+        <Routes forceRefresh>
           <Route path="/" element={<FrontPage/>}/>
           <Route path="/signin" element={<SignIn/>}/>
           <Route path="/home" element={<Homepage/>}/>
@@ -31,9 +43,9 @@ const App=()=> {
           <Route path="/community" element={<Community/>}/>
           <Route path="/brands" element={<Brands/>}/>
           <Route path="/brands/:brand" element={<ProductFilterBrand/>}/>
+          <Route path="/edit-profile" element={<EditProfile/>}/>
         </Routes>
       </DndProvider>
-    </UserContext.Provider>
       
     </BrowserRouter>
   )

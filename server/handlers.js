@@ -96,6 +96,27 @@ const addUser = async (req, res) => {
         return res.status(400).json({ status: 400, message: "Invalid data!" });
     }
 };
+const updateUser = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  try {
+    const name = req.params.name;
+    const query = { name};
+    const updatedOrder = { $set: { ...req.body } };
+
+    await client.connect();
+    const db = client.db("SkinExpert");
+
+    if (name != null) {
+      await db.collection("Users").updateOne(query, updatedOrder);
+      res.status(200).json({ status: 200, ...req.body });
+    } else {
+      res.status(400).json({ status: 400, message: "Error!" });
+    }
+    client.close();
+  } catch {
+    return res.status(400).json({ status: 400, message: "Invalid data!" });
+  }
+};
 
 const getProducts = async (req, res) => {
     const client = new MongoClient(MONGO_URI, options);
@@ -179,34 +200,70 @@ const getProducts = async (req, res) => {
             }
         };
             const getProductByConcern = async (req, res) => {
-                const skin_concerns=req.params;
+                const {skin_concern}=req.params;
+                let keys=[];
+                let data =[];
+                if(skin_concern=="Acne"){
+                  keys.push("Acne");
+                  keys.push("Blemishes");
+                }
+                else if(skin_concern=="Pores"){
+                  keys.push("Pores");
+                  keys.push("Uneven Texture")
+                }
+                else if(skin_concern=="Signs of Aging"){
+                  keys.push("Signs of Aging");
+                  keys.push("Loss of Firmness and Elasticity");
+                }
+                else if(skin_concern=="Dark Spots"){
+                  keys.push("Dark Spots");
+                }
+                else if(skin_concern=="Fine Lines and Wrinkles"){
+                  keys.push("Fine Lines and Wrinkles");
+                }
+                else if(skin_concern=="Dullness"){
+                  keys.push("Dullness");
+                }
+                else if(skin_concern=="Puffy Eyes"){
+                  keys.push("Puffiness");
+                }
+                else if(skin_concern=="Redness"){
+                  keys.push("Redness");
+                }
+                else if(skin_concern=="Dryness"){
+                  keys.push("Dryness");
+                }
+                else if(skin_concern=="Hyperpigmentation"){
+                  keys.push("Uneven Skin Tone");
+                }
+                
                 const client = new MongoClient(MONGO_URI, options);
                 try {
                   await client.connect();
                   const db = client.db("SkinExpert");
-                  const result = await db.collection("Products").inventory.aggregate( [ {
-                    $project: {
-                       index: { $indexOfArray: [ "$brand", skin_concerns ] }
+                  const result = await db.collection("Products").find().toArray();
+                  for(let i=0;i<result.length;i++){
+                    for(let x=0;x<keys.length;x++){
+                      if(result[i].skin_concerns==undefined){
+                        console.log("error" );
+                        console.log(result[i]);
+                      }
+                      if((result[i].skin_concerns).indexOf(keys[x])>=0){
+                        data.push(result[i]);
+                      }
                     }
-                 } ] )
-              
-                  client.close();
-                  console.log(result);
-                  if(result.length === 0){
-                    res.status(404).json({
-                      status: 404,
-                      message: "No items found",
-                    })
-                  }else{
+                  }
+                  if(data){
+                    client.close();
                     res.status(200).json({
                       status: 200,
-                      data: result,
+                      data: data,
                     });
                   }
                 } catch (err) {
                   res.status(400).json({
                     status: 400,
-                    message: "Bad Request",
+                    message: err.message,
                   });
                 }
             };
@@ -335,25 +392,31 @@ const addCurrentRoutine = async (req, res) => {
         const obj={};
 
         if(step=='cleanser'){
-            key='Cleanser'
+            key='Cleanser';
         }
         else if(step=='moisturizing-cream-oils-mists'){
-            key='Moisturizer'
+            key='Moisturizer';
         }
         else if(step=='facial-treatments'){
-            key='Treatment'
+            key='Treatment';
         }
         else if(step=='eye-treatment-dark-circle-treatment'){
-            key='EyeCare'
+            key='EyeCare';
         }
         else if(step=='facial-treatment-masks'){
-            key='Mask'
+            key='Mask';
         }
         else if(step =='sunscreen-sun-protection'){
-            key='SunScreen'
+            key='SunScreen';
         }
         else if(step=='lip-treatments'){
-            key='LipCare'
+            key='LipCare';
+        }
+        else if(step=="Favorite"){
+          key='Favorite';
+        }
+        else if(step=="Dislike"){
+          key='Dislike'
         }
         console.log(key);
     try {
@@ -374,7 +437,7 @@ const addCurrentRoutine = async (req, res) => {
         else{
             const newItem={$set: {...{[key]:item}}};
             const query={user:activeUser};
-            const result = await db.collection("Routine").updateOne(query, newItem);
+            const result = await db.collection("Routine").updateOne(query, newItem,{upsert:true});
             client.close();
             return res.status(200).json({
                 status: 200,
@@ -387,6 +450,51 @@ const addCurrentRoutine = async (req, res) => {
         return res.status(400).json({ status: 400, message: "Invalid data!" });
     }
 }
+const deleteRoutine = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+      const {step}=req.params;
+      const{activeUser}=req.params;
+      let key="";
+
+      if(step=='cleanser'){
+          key='Cleanser';
+      }
+      else if(step=='moisturizing-cream-oils-mists'){
+          key='Moisturizer';
+      }
+      else if(step=='facial-treatments'){
+          key='Treatment';
+      }
+      else if(step=='eye-treatment-dark-circle-treatment'){
+          key='EyeCare';
+      }
+      else if(step=='facial-treatment-masks'){
+          key='Mask';
+      }
+      else if(step =='sunscreen-sun-protection'){
+          key='SunScreen';
+      }
+      else if(step=='lip-treatments'){
+          key='LipCare';
+      }
+  try {
+      await client.connect();
+      const db = client.db("SkinExpert");
+      const user =await db.collection("Routine").findOne({user:activeUser});
+      console.log(user);
+      if(!user){
+          await db.collection("Routine").deleteOne(user.key);
+          client.close();
+          return res.status(200).json({
+              status: 200,
+              message: "Success",
+          });
+      }
+  } catch (err) {
+      return res.status(400).json({ status: 400, message: "Invalid data!" });
+  }
+}
+
 const getRoutine=async(req,res)=>{
     const {activeUser}=req.params;
     const client = new MongoClient(MONGO_URI, options);
@@ -416,13 +524,13 @@ try {
         message: "Bad Request",
     });
     }
-   
 }
 
 module.exports = {
     getCategory,
     addCartItem,
-    getUser,addUser,getProducts,getProduct,getProductByCategory,getProductByConcern,getProductByBrand,
-    getBrands,addCurrentRoutine,getRoutine,
+    getUser,addUser,updateUser,
+    getProducts,getProduct,getProductByCategory,getProductByConcern,getProductByBrand,
+    getBrands,addCurrentRoutine,getRoutine,deleteRoutine,
     getPosts,addPost
 };

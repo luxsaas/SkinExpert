@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import {useParams} from 'react-router-dom';
 import ProductMenu from './ProductMenu';
-import { useState, useEffect } from "react";
+import { useState, useEffect,useContext } from "react";
 import Pagination from "./Pagination";
+import { UserContext } from "../UserContext";
+import {TiThumbsUp, TiThumbsDown} from "react-icons/ti"
 
 const ProductFilterPageB=()=>{
 
@@ -10,21 +12,40 @@ const ProductFilterPageB=()=>{
     const [items,setItems]=useState([]);
     const [currentPage,setCurrentPage]=useState(1);
     const [itemsPerPage,setItemsPerPage]=useState(32);
-
+    const {activeUser,setActiveUser} =useContext(UserContext);
+    
     useEffect(() => {
-        fetch(`/products`)
+        fetch(`/product/concern/${skin_concerns}`)
           .then((res) => res.json())
           .then((data) => {
             setItems(data.data);
           });
       }, []);
-
+      
+    const addToCurrentRoutine=(item)=>{
+        const formData=item;
+        fetch(`/routine/${activeUser}/${item.category}`,{
+            method:"POST",
+            headers:{
+                "Accept":"application/json",
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(formData)
+        })
+        .then(res=>res.json())
+        .then((data)=>{
+        })
+        .catch((error)=>{
+            window.alert(error);
+        })
+        // window.location.reload();
+    }
       const idxOfLastItem=currentPage*itemsPerPage;
       const idxOfFirstItem=idxOfLastItem-itemsPerPage;
       const currentItems=items.slice(idxOfFirstItem,idxOfLastItem);
-      let totalItems =0;
-
       const paginate=(pageNumber)=>setCurrentPage(pageNumber);
+
+    console.log(items);
     return(
         <Container>
             <ProductMenu/>
@@ -32,22 +53,26 @@ const ProductFilterPageB=()=>{
                 <p>{skin_concerns}</p>
             <StyledDiv>
                 {Object.values(currentItems).map((item)=>{
-                    const concerns=item.skin_concerns;
-                    if(concerns.indexOf(skin_concerns)>=0){
-                        totalItems++;
                     return (
-                        <Item href={`/products/detail/${item.id}`}>
-                            <ItemDiv>
-                                <StyledImg src={item.img_src}></StyledImg>
-                                <StyledTitle>{item.name}</StyledTitle>
-                                <StyledBrand>{item.brand}</StyledBrand>
-                                <StyledRating>Rating: {item.hearts}</StyledRating>
-                            </ItemDiv>
-                        </Item>
+                        <ProductDiv>
+                            <Item href={`/products/detail/${item.id}`}>
+                                <ItemDiv>
+                                    <StyledImg src={item.img_src}></StyledImg>
+                                    <StyledTitle>{item.name}</StyledTitle>
+                                    <StyledBrand>{item.brand}</StyledBrand>
+                                    <StyledRating>Rating: {item.hearts}</StyledRating>
+                                </ItemDiv>
+                            </Item>
+                            <ButtonDiv>
+                                <button>{<TiThumbsUp/>}</button>
+                                <button onClick={()=>addToCurrentRoutine(item)}>Add to Routine</button>
+                                <button>{<TiThumbsDown/>}</button>
+                            </ButtonDiv>
+                        </ProductDiv>
                     )}
-                })}
+                )}
             </StyledDiv>
-            <Pagination itemsPerPage={itemsPerPage} totalItems={totalItems} paginate={paginate} />
+            <Pagination itemsPerPage={itemsPerPage} totalItems={items.length} paginate={paginate} />
             </div>}
         </Container>
     )
@@ -55,6 +80,11 @@ const ProductFilterPageB=()=>{
 const Container =styled.div`
 display: flex;
 flex-direction: row;
+`
+const ButtonDiv=styled.div`
+display: flex;
+flex-direction: row;
+justify-content: space-between;
 `
 const StyledDiv=styled.div`
 display: grid;
@@ -91,5 +121,12 @@ padding:0;
 `
 const Item=styled.a`
 text-decoration: none;
+`
+
+const ProductDiv=styled.div`
+display:flex;
+flex-direction:column;
+justify-content:center;
+margin:5px;
 `
 export default ProductFilterPageB;

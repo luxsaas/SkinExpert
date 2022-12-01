@@ -1,48 +1,96 @@
-import { useEffect, useState } from "react";
 import styled from "styled-components";
-
+import {useParams} from 'react-router-dom';
+import ProductMenu from './ProductMenu';
+import { useState, useEffect,useContext } from "react";
+import Pagination from "./Pagination";
+import { UserContext } from "../UserContext";
+import SearchBar from "./SearchBar";
+import {TiThumbsUp, TiThumbsDown} from "react-icons/ti"
 const ProductMenuItem=()=>{
-    const [items,setItems]=useState(null);
+
+    const {skin_concerns} = useParams();
+    const [items,setItems]=useState([]);
+    const [currentPage,setCurrentPage]=useState(1);
+    const [itemsPerPage,setItemsPerPage]=useState(32);
+    const {activeUser,setActiveUser} =useContext(UserContext);
 
     useEffect(() => {
-        const options = {
-            method: 'GET',
-            headers: {
-                'X-RapidAPI-Key': '86c308ee4bmsh483020311c2e30ap175feejsn84950bda0d0f',
-                'X-RapidAPI-Host': 'sephora.p.rapidapi.com'
-            }
-        };
-        
-        fetch('https://sephora.p.rapidapi.com/products/list?categoryId=cat150006&pageSize=60&currentPage=1', options)
-            .then(response => response.json())
-            .then(response => setItems(response.products))
-            .catch(err => console.error(err));
-    }, []);
+        fetch(`/products`)
+          .then((res) => res.json())
+          .then((data) => {
+            setItems(data.data);
+          });
+      }, []);
+      
+    const addToCurrentRoutine=(item)=>{
+        const formData=item;
+        fetch(`/routine/${activeUser}/${item.category}`,{
+            method:"POST",
+            headers:{
+                "Accept":"application/json",
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(formData)
+        })
+        .then(res=>res.json())
+        .then((data)=>{
+        })
+        .catch((error)=>{
+            window.alert(error);
+        })
+        // window.location.reload();
+    }
+      const idxOfLastItem=currentPage*itemsPerPage;
+      const idxOfFirstItem=idxOfLastItem-itemsPerPage;
+      const currentItems=items.slice(idxOfFirstItem,idxOfLastItem);
 
-    console.log(items);
     return(
         <Container>
-            {items&&Object.values(items).map((item)=>{
-                return (
-                    <Item href={`/products/detail/${item.productId}/${item.currentSku.skuId}`}>
-                        <ItemDiv>
-                            <StyledImg src={item.heroImage}></StyledImg>
-                            <StyledTitle>{item.displayName}</StyledTitle>
-                            <StyledBrand>{item.brandName}</StyledBrand>
-                            <StyledRating>Rating: {item.rating}</StyledRating>
-                        </ItemDiv>
-                    </Item>
-                )
-            })
-        }
+            <div>
+            <SearchBar/>
+            <p>Featured Products</p>
+            {(currentItems&&items)&&<div>
+                <p>{skin_concerns}</p>
+            <StyledDiv>
+                {Object.values(currentItems).map((item)=>{
+                    const concerns=item.skin_concerns;
+                    return (
+                        
+                        <ProductDiv>
+                            <Item href={`/products/detail/${item.id}`}>
+                                <ItemDiv>
+                                    <StyledImg src={item.img_src}></StyledImg>
+                                    <StyledTitle>{item.name}</StyledTitle>
+                                    <StyledBrand>{item.brand}</StyledBrand>
+                                    <StyledRating>Rating: {item.hearts}</StyledRating>
+                                </ItemDiv>
+                            </Item>
+                            <ButtonDiv>
+                                <button>{<TiThumbsUp/>}</button>
+                                <button onClick={()=>addToCurrentRoutine(item)}>Add to Routine</button>
+                                <button>{<TiThumbsDown/>}</button>
+                            </ButtonDiv>
+                        </ProductDiv>
+                    )
+                })}
+            </StyledDiv>
+            </div>}</div>
         </Container>
     )
 }
-
 const Container =styled.div`
-display: grid;
-grid-template-columns: auto auto auto ;
+display: flex;
+flex-direction: row;
+`
+const ButtonDiv=styled.div`
+display: flex;
+flex-direction: row;
+justify-content: space-between
+`
 
+const StyledDiv=styled.div`
+display: grid;
+grid-template-columns: auto auto auto auto ;
 `
 const ItemDiv=styled.div`
 border:1px solid black;
@@ -75,6 +123,13 @@ padding:0;
 `
 const Item=styled.a`
 text-decoration: none;
+`
+
+const ProductDiv=styled.div`
+display:flex;
+flex-direction:column;
+justify-content:center;
+margin:5px;
 `
 
 export default ProductMenuItem;

@@ -1,4 +1,4 @@
-// import styled from "styled-components";
+import styled from "styled-components";
 import React from "react";
 import {useAuth0} from "@auth0/auth0-react"
 
@@ -6,9 +6,22 @@ import {useAuth0} from "@auth0/auth0-react"
 const LoginButton=()=>{
     const {loginWithRedirect}=useAuth0();
     return(
-        <button onClick={()=>loginWithRedirect()}>
-            Log In
-        </button>
+        <Container>
+            <StyledButton onClick={()=>loginWithRedirect()}>
+                Log In
+            </StyledButton>
+        </Container>
     )
 }
+const Container=styled.div`
+display: flex;
+flex-direction: row;
+justify-content: center;
+`
+const StyledButton=styled.button`
+font-size: 20px;
+border: 4px solid #abc4ff;
+border-radius: 20px;
+padding: 5px;
+`
 export default LoginButton;

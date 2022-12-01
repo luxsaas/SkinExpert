@@ -2,6 +2,7 @@ import styled from "styled-components";
 import LoginButton from "./LoginButton";
 import {useAuth0} from "@auth0/auth0-react";
 import {useNavigate} from "react-router-dom"
+import GlobalStyles from "./GlobalStyles";
 const FrontPage =()=>{
     const {user,isAuthenticated, isLoading}=useAuth0();
     const navigate =useNavigate();
@@ -12,7 +13,7 @@ const FrontPage =()=>{
         <Container>
             {isAuthenticated?(navigate("/home"))
             :(<div>
-                <h1>SkinExpert</h1>
+                <Title>SkinExpert</Title>
                 <LoginButton/>
             </div>)}
         </Container>
@@ -21,7 +22,16 @@ const FrontPage =()=>{
 const Container =styled.div`
 display: flex;
 flex-direction: column;
+justify-content: center;
 align-items: center;
-margin-top: 30vh;
+background-color: #edf2fb;
+height: 100vh;
+
+`
+
+const Title= styled.h1`
+font-size: 100px;
+font-family: serif;
+color: #abc4ff;
 `
 export default FrontPage;

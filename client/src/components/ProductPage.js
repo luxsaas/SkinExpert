@@ -1,15 +1,13 @@
 import ProductMenu from "./ProductMenu";
 import styled from "styled-components";
 import ProductMenuItem from "./ProductMenuItem";
+
 const ProductPage =()=>{
     
     return(
         <Container>
             <ProductMenu/>
-            <div>
-                <p>Products</p>
-                <ProductMenuItem/>
-            </div>
+            <ProductMenuItem/>
         </Container>
     )
 }

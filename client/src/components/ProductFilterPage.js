@@ -1,14 +1,17 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import ProductMenu from "./ProductMenu";
 import {useParams} from 'react-router-dom';
 import Pagination from "./Pagination";
+import { UserContext } from "../UserContext";
+import {TiThumbsUp, TiThumbsDown} from "react-icons/ti";
 
 const ProductFilterPage=()=>{
     const {category}=useParams();
     const [currentPage,setCurrentPage]=useState(1);
     const [itemsPerPage,setItemsPerPage]=useState(32);
     const [items,setItems]=useState([]);
+    const {activeUser,setActiveUser} =useContext(UserContext);
 
       useEffect(() => {
         fetch(`/product/category/${category}`)
@@ -17,13 +20,30 @@ const ProductFilterPage=()=>{
             setItems(data.data);
           });
       }, []);
-
+      
+      const addToCurrentRoutine=(item)=>{
+        const formData=item;
+        fetch(`/routine/${activeUser}/${item.category}`,{
+            method:"POST",
+            headers:{
+                "Accept":"application/json",
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(formData)
+        })
+        .then(res=>res.json())
+        .then((data)=>{
+        })
+        .catch((error)=>{
+            window.alert(error);
+        })
+        // window.location.reload();
+      }
       const idxOfLastItem=currentPage*itemsPerPage;
       const idxOfFirstItem=idxOfLastItem-itemsPerPage;
       const currentItems=items.slice(idxOfFirstItem,idxOfLastItem);
-
-  
       const paginate=(pageNumber)=>setCurrentPage(pageNumber);
+
     return(
         <Container>
             <ProductMenu/>
@@ -32,14 +52,21 @@ const ProductFilterPage=()=>{
             <StyledDiv>
                 {Object.values(currentItems).map((item)=>{
                     return (
-                        <Item href={`/products/detail/${item.id}`}>
-                            <ItemDiv>
-                                <StyledImg src={item.img_src}></StyledImg>
-                                <StyledTitle>{item.name}</StyledTitle>
-                                <StyledBrand>{item.brand}</StyledBrand>
-                                <StyledRating>Rating: {item.hearts}</StyledRating>
-                            </ItemDiv>
-                        </Item>
+                        <ProductDiv>
+                            <Item href={`/products/detail/${item.id}`}>
+                                <ItemDiv>
+                                    <StyledImg src={item.img_src}></StyledImg>
+                                    <StyledTitle>{item.name}</StyledTitle>
+                                    <StyledBrand>{item.brand}</StyledBrand>
+                                    <StyledRating>Rating: {item.hearts}</StyledRating>
+                                </ItemDiv>
+                            </Item>
+                            <ButtonDiv>
+                                <button>{<TiThumbsUp/>}</button>
+                                <button onClick={()=>addToCurrentRoutine(item)}>Add to Routine</button>
+                                <button>{<TiThumbsDown/>}</button>
+                            </ButtonDiv>
+                        </ProductDiv>
                     )
                 })}
             </StyledDiv>
@@ -51,6 +78,11 @@ const ProductFilterPage=()=>{
 const Container =styled.div`
 display: flex;
 flex-direction: row;
+`
+const ButtonDiv=styled.div`
+display: flex;
+flex-direction: row;
+justify-content: space-between;
 `
 const StyledDiv=styled.div`
 display: grid;
@@ -87,6 +119,12 @@ padding:0;
 `
 const Item=styled.a`
 text-decoration: none;
+`
+const ProductDiv=styled.div`
+display:flex;
+flex-direction:column;
+justify-content:center;
+margin:5px;
 `
 
 export default ProductFilterPage;

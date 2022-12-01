@@ -4,6 +4,9 @@ import styled from "styled-components";
 import {useParams} from 'react-router-dom';
 import Pagination from "./Pagination";
 import { UserContext } from "../UserContext";
+import {TiThumbsUp, TiThumbsDown} from "react-icons/ti";
+
+
 const ProductFilterBrand=()=>{
     const {brand} = useParams();
     const [items,setItems]=useState([]);
@@ -60,7 +63,11 @@ const ProductFilterBrand=()=>{
                                 <StyledRating>Rating: {item.hearts}</StyledRating>
                             </ItemDiv>
                         </Item>
-                        <button onClick={()=>addToCurrentRoutine(item)}>Add to Routine</button>
+                        <ButtonDiv>
+                                <button>{<TiThumbsUp/>}</button>
+                                <button onClick={()=>addToCurrentRoutine(item)}>Add to Routine</button>
+                                <button>{<TiThumbsDown/>}</button>
+                        </ButtonDiv>
                         </ProductDiv>
                     )}
                 )}
@@ -73,6 +80,11 @@ const ProductFilterBrand=()=>{
 const Container =styled.div`
 display: flex;
 flex-direction: row;
+`
+const ButtonDiv=styled.div`
+display: flex;
+flex-direction: row;
+justify-content: space-between;
 `
 const StyledDiv=styled.div`
 display: grid;

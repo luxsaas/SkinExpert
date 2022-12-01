@@ -16,7 +16,9 @@ const {
     getBrands,
     getProductByConcern,
     addCurrentRoutine,
-    getRoutine} = require("./handlers.js");
+    getRoutine,
+    deleteRoutine,
+    updateUser} = require("./handlers.js");
 express()
 
     .use(express.json())
@@ -26,6 +28,7 @@ express()
     .post('/category',addCartItem)
     .get('/users/:user',getUser)
     .post('/users',addUser)
+    .patch('/users/:name',updateUser)
     .get('/products',getProducts)
     .get('/product/:id',getProduct)
     .get('/product/category/:category',getProductByCategory)
@@ -35,10 +38,11 @@ express()
     .get('/posts',getPosts)
     .post('/posts',addPost)
     .post('/routine/:activeUser/:step',addCurrentRoutine)
+    .delete('/routine/:activeUser/:step',deleteRoutine)
     .get('/routine/:activeUser',getRoutine)
 
 
-
+    
     .listen(port, () => {
         console.log(`Example app listening on port ${port}`)
     })
