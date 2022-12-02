@@ -4,8 +4,6 @@ const morgan=require("morgan");
 const port = 8000;
 
 const {
-    getCategory,
-    addCartItem,
     getUser,addUser,
     getProducts,
     getPosts,
@@ -17,15 +15,17 @@ const {
     getProductByConcern,
     addCurrentRoutine,
     getRoutine,
-    deleteRoutine,
-    updateUser} = require("./handlers.js");
+    deleteIteminBin,
+    deleteIteminBin2,
+    updateUser,
+    addMessage,
+    deleteCurrentRoutine} = require("./handlers.js");
 express()
 
     .use(express.json())
     .use(helmet())
     .use(morgan('tiny'))
-    .get('/category', getCategory)
-    .post('/category',addCartItem)
+
     .get('/users/:user',getUser)
     .post('/users',addUser)
     .patch('/users/:name',updateUser)
@@ -38,8 +38,11 @@ express()
     .get('/posts',getPosts)
     .post('/posts',addPost)
     .post('/routine/:activeUser/:step',addCurrentRoutine)
-    .delete('/routine/:activeUser/:step',deleteRoutine)
+    .patch('/currentroutine/:activeUser/:step',deleteCurrentRoutine)
+    .patch('/routine/:activeUser/:_id',deleteIteminBin)
+    .patch('/routine2/:activeUser/:_id',deleteIteminBin2)
     .get('/routine/:activeUser',getRoutine)
+    .post('/message/:activeUser/:_id',addMessage)
 
 
     

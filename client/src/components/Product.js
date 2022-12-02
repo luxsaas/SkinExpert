@@ -3,7 +3,7 @@ import {useDrag} from "react-dnd";
 import {FcEmptyTrash} from "react-icons/fc";
 import { useContext } from "react";
 import { UserContext } from "../UserContext";
-const Product=({item,id})=>{
+const Product=({item,id,refresh,setRefresh})=>{
     const {activeUser,setActiveUser}=useContext(UserContext);
     const [{isDragging},drag]=useDrag(()=>({
         type:"image",
@@ -15,25 +15,23 @@ const Product=({item,id})=>{
 
     const handleClick=(category)=>{
         
-        console.log("hi");
-        fetch(`/routine/${activeUser}/${category}`,{
-            method:"POST",
+        fetch(`/currentroutine/${activeUser}/${category}`,{
+            method:"PATCH",
             headers:{
                 "Accept":"application/json",
                 "Content-Type":"application/json"
             },
-            body:JSON.stringify(null)
         })
         .then(res=>res.json())
         .then((data)=>{
         })
-        .catch((error)=>{
-            window.alert(error);
-        })
-            .then((res) => res.json())
-            .then((data) => {});
+        // .catch((error)=>{
+        //     window.alert(error);
+        // })
+            // window.location.reload();
+            setRefresh(refresh+1);
     }
-    console.log(activeUser);
+
     return(
         <Container>
             <Item style={{border: isDragging?"5px solid pink":"0px solid pink"}} ref={drag}>

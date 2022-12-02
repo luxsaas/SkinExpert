@@ -9,44 +9,6 @@ const options = {
 require("dotenv").config();
 const { MONGO_URI } = process.env;
 
-const getCategory = async (req, res) => {
-const client = new MongoClient(MONGO_URI, options);
-try {
-    await client.connect();
-    const db = client.db("SkinExpert");
-    const data = await db.collection("Category").find().toArray();
-    if (!data) {
-        res.status(200).json({
-        status: 200,
-        data: data,
-        });
-    } 
-} catch (err) {
-    res.status(400).json({
-        status: 400,
-        message: "Bad Request",
-    });
-    }
-    client.close();
-};
-const addCartItem = async (req, res) => {
-    const client = new MongoClient(MONGO_URI, options);
-    try {
-        const newItem = req.body;
-        await client.connect();
-        const db = client.db("SkinExpert");
-
-        await db.collection("Category").insertOne(newItem);
-        client.close();
-        return res.status(200).json({
-            status: 200,
-            message: "Item added to cart",
-            data: newItem,
-        });
-    } catch (err) {
-        return res.status(400).json({ status: 400, message: "Invalid data!" });
-    }
-};
 
 const getUser=async(req,res)=>{
     const user =req.params.user;
@@ -144,7 +106,7 @@ const getProducts = async (req, res) => {
       });
     }
     };
-    const getProduct = async (req, res) => {
+const getProduct = async (req, res) => {
         const id=req.params;
         console.log(id);
         const client = new MongoClient(MONGO_URI, options);
@@ -172,7 +134,7 @@ const getProducts = async (req, res) => {
           });
         }
         };
-        const getProductByCategory = async (req, res) => {
+const getProductByCategory = async (req, res) => {
             const category=req.params;
             const client = new MongoClient(MONGO_URI, options);
             try {
@@ -199,7 +161,7 @@ const getProducts = async (req, res) => {
               });
             }
         };
-            const getProductByConcern = async (req, res) => {
+const getProductByConcern = async (req, res) => {
                 const {skin_concern}=req.params;
                 let keys=[];
                 let data =[];
@@ -267,7 +229,7 @@ const getProducts = async (req, res) => {
                   });
                 }
             };
-            const getProductByBrand = async (req, res) => {
+const getProductByBrand = async (req, res) => {
                 const brand=req.params;
                 const client = new MongoClient(MONGO_URI, options);
                 try {
@@ -450,48 +412,129 @@ const addCurrentRoutine = async (req, res) => {
         return res.status(400).json({ status: 400, message: "Invalid data!" });
     }
 }
-const deleteRoutine = async (req, res) => {
-  const client = new MongoClient(MONGO_URI, options);
-      const {step}=req.params;
-      const{activeUser}=req.params;
-      let key="";
 
-      if(step=='cleanser'){
-          key='Cleanser';
-      }
-      else if(step=='moisturizing-cream-oils-mists'){
-          key='Moisturizer';
-      }
-      else if(step=='facial-treatments'){
-          key='Treatment';
-      }
-      else if(step=='eye-treatment-dark-circle-treatment'){
-          key='EyeCare';
-      }
-      else if(step=='facial-treatment-masks'){
-          key='Mask';
-      }
-      else if(step =='sunscreen-sun-protection'){
-          key='SunScreen';
-      }
-      else if(step=='lip-treatments'){
-          key='LipCare';
-      }
-  try {
-      await client.connect();
-      const db = client.db("SkinExpert");
-      const user =await db.collection("Routine").findOne({user:activeUser});
-      console.log(user);
-      if(!user){
-          await db.collection("Routine").deleteOne(user.key);
-          client.close();
-          return res.status(200).json({
-              status: 200,
-              message: "Success",
-          });
-      }
+const deleteCurrentRoutine = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const {step}=req.params;
+  const{activeUser}=req.params;
+  let key="";
+        const obj={};
+        if(step=='cleanser'){
+            key='Cleanser';
+        }
+        else if(step=='moisturizing-cream-oils-mists'){
+            key='Moisturizer';
+        }
+        else if(step=='facial-treatments'){
+            key='Treatment';
+        }
+        else if(step=='eye-treatment-dark-circle-treatment'){
+            key='EyeCare';
+        }
+        else if(step=='facial-treatment-masks'){
+            key='Mask';
+        }
+        else if(step =='sunscreen-sun-protection'){
+            key='SunScreen';
+        }
+        else if(step=='lip-treatments'){
+            key='LipCare';
+        }
+try {
+  await client.connect();
+  const db = client.db("SkinExpert");
+  const data = await db.collection("Routine").updateOne({user:activeUser},{$unset:{[`${key}`]:1}});
+    if(data!=null){
+      client.close();
+      return res.status(200).json({
+          status: 200,
+          message: "Success",
+          data: data,
+      });
+    }
+    else{
+      client.close();
+      return res.status(400).json({ status: 400, message: "Data is null!" });
+    }
   } catch (err) {
-      return res.status(400).json({ status: 400, message: "Invalid data!" });
+    return res.status(400).json({ status: 400, message: "Invalid data!" });
+  }
+}
+
+
+const deleteIteminBin = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const {_id}=req.params;
+  const{activeUser}=req.params;
+try {
+  const item = req.body;
+  await client.connect();
+  const db = client.db("SkinExpert");
+  const data = await db.collection("Routine").updateOne({user:activeUser,"Favorite.item._id":_id},{$unset:{"Favorite.$":1}});
+    if(data!=null){
+      client.close();
+      return res.status(200).json({
+          status: 200,
+          message: "Success",
+          data: data,
+      });
+    }
+    else{
+      client.close();
+      return res.status(400).json({ status: 400, message: "Data is null!" });
+    }
+  } catch (err) {
+    return res.status(400).json({ status: 400, message: "Invalid data!" });
+  }
+}
+const deleteIteminBin2 = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const {_id}=req.params;
+  const{activeUser}=req.params;
+try {
+  const item = req.body;
+  await client.connect();
+  const db = client.db("SkinExpert");
+  const data = await db.collection("Routine").updateOne({user:activeUser,"Dislike.item._id":_id},{$unset:{"Dislike.$":1}});
+    if(data!=null){
+      client.close();
+      return res.status(200).json({
+          status: 200,
+          message: "Success",
+          data: data,
+      });
+    }
+    else{
+      client.close();
+      return res.status(400).json({ status: 400, message: "Data is null!" });
+    }
+  } catch (err) {
+    return res.status(400).json({ status: 400, message: "Invalid data!" });
+  }
+}
+const addMessage = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const {_id}=req.params;
+  const{activeUser}=req.params;
+try {
+  const item = req.body;
+  await client.connect();
+  const db = client.db("SkinExpert");
+  const data = await db.collection("Routine").updateOne({user:activeUser,"Favorite.item._id":_id},{$set:{"Favorite.$.message":item}});
+    if(data!=null){
+      client.close();
+      return res.status(200).json({
+          status: 200,
+          message: "Success",
+          data: data,
+      });
+    }
+    else{
+      client.close();
+      return res.status(400).json({ status: 400, message: "Data is null!" });
+    }
+  } catch (err) {
+    return res.status(400).json({ status: 400, message: "Invalid data!" });
   }
 }
 
@@ -527,10 +570,9 @@ try {
 }
 
 module.exports = {
-    getCategory,
-    addCartItem,
     getUser,addUser,updateUser,
     getProducts,getProduct,getProductByCategory,getProductByConcern,getProductByBrand,
-    getBrands,addCurrentRoutine,getRoutine,deleteRoutine,
+    getBrands,addCurrentRoutine,getRoutine,deleteIteminBin,deleteIteminBin2,deleteCurrentRoutine,
+    addMessage,
     getPosts,addPost
 };

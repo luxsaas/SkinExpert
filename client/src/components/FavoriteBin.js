@@ -2,15 +2,15 @@ import styled from "styled-components";
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../UserContext";
 import {useDrop} from "react-dnd";
-import {FcEmptyTrash} from "react-icons/fc";
-import {BiNote} from "react-icons/bi";
-import {RiCloseFill} from "react-icons/ri"
+
+import Notes from "./Notes";
 const FavoriteBin=({id})=>{
     const [favorite,setFavorite]=useState([]);
-    const[isNoteVisible,setIsNoteVisible]=useState(false);
+    const [refresh,setRefresh]=useState(1);
+    const {activeUser,setActiveUser}=useContext(UserContext);
     const [noteForm,setNoteForm]=useState(null);
     let favoriteArr = [];
-    const {activeUser,setActiveUser}=useContext(UserContext);
+
     const [{canDrop, isOver},drop]=useDrop(()=>({
         accept:"image",
         drop:(item)=>addItemToBoard(item),
@@ -20,22 +20,18 @@ const FavoriteBin=({id})=>{
         })
     })
     )
-    const handleNote=()=>{
-        if(isNoteVisible==true){
-            setIsNoteVisible(false);
-        }
-        else{
-            setIsNoteVisible(true);
-        }
-    }
+
     useEffect(() => {
         fetch(`/routine/${activeUser}`)
         .then((res) => res.json())
         .then((data) => {
             setFavorite(data.data[0]?.Favorite);
-            favoriteArr=(favorite);
+            Object.values(favorite).map((item)=>{
+                favoriteArr.push(item);
+            })
+            setNoteForm(favorite?.message);
         })
-    }, [])
+    }, [refresh])
     const addItemToBoard=(item)=>{
         favoriteArr.push(item);
         setFavorite(favoriteArr);
@@ -54,64 +50,61 @@ const FavoriteBin=({id})=>{
             window.alert(error);
         })
     }
-    const handleClick=(name)=>{
-        Object.values(favoriteArr).map((item)=>{
-            if(item.item.name==name){
-                favoriteArr.pop(item);
-            }
-        })
-        setFavorite(favoriteArr);
-        fetch(`/routine/${activeUser}/Favorite`,{
-            method:"POST",
+    const handleClick=(_id,item)=>{
+        fetch(`/routine/${activeUser}/${_id}`,{
+            method:"PATCH",
             headers:{
                 "Accept":"application/json",
                 "Content-Type":"application/json"
-            },
-            body:JSON.stringify(favoriteArr)
+            }
         })
         .then(res=>res.json())
         .then((data)=>{
         })
-        .catch((error)=>{
-            window.alert(error);
-        })
+        // .catch((error)=>{
+        //     window.alert(error);
+        // })
+        setRefresh(refresh+1);
+
+
     }
+    
 
     const handleChange=(e)=>{
         setNoteForm(e.target.value);
     }
     
+    // console.log("Favorite", favorite);
+    // console.log("Array",favoriteArr );
+
     return(
         <div>
             <p>Favorites</p>
             <Favorites ref={drop} style={{ backgroundColor: isOver ? 'red' : 'white' }}  >
                 {favorite&&Object.values(favorite).map((item)=>{
+                    if(item!=null){
                     return(
-                        <Item>
-                            <StyledImg src={item.item.img_src}></StyledImg>
-                            <ButtonDiv>
-                                <button onClick={()=>handleClick(item.item.name)}  ><FcEmptyTrash/></button>
-                                <button onClick={handleNote}><BiNote/></button>
-                            </ButtonDiv>
-                            <NotesDiv style={{ visibility: isNoteVisible ? "visible" : "hidden" }}>
-                                <StyledDiv>
-                                    <p>Notes</p>
-                                    <button onClick={handleNote}><RiCloseFill/></button>
-                                </StyledDiv>
-                                <NoteInput onChange={(e)=>handleChange(e)}></NoteInput>
-                                </NotesDiv>
-                                <Overlay style={{backgroundColor: isNoteVisible? "rgba(0,0,0,0.5)":"transparent",pointerEvents: isNoteVisible?"all":"none"}}></Overlay>
-                        </Item>
-                    )
+                        <Notes item={item}  handleClick={handleClick} handleChange={handleChange} noteForm={noteForm} setNoteForm={setNoteForm}refresh={refresh} setRefresh={setRefresh}/>
+                    )}
                 })}
             </Favorites>
         </div>
     )
 }
 
-const NoteInput=styled.input`
+const Note =styled.p`
+border: 1px solid black;
+height:7800px;
+width:280px;
+`
+const StyledP=styled.p`
+margin-right: 180px;
+`
+const NoteInput=styled.textarea`
 width:250px;
 height:300px;
+margin:0;
+padding: 0;
 `
 const StyledDiv=styled.div`
 display: flex;
@@ -143,6 +136,10 @@ z-index: 10;
 background-color: white;
 width:300px;
 height: 400px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
 `
 
 const ButtonDiv=styled.div`
