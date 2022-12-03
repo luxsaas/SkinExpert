@@ -18,7 +18,7 @@ try {
     await client.connect();
     const db = client.db("SkinExpert");
     const data = await db.collection("Users").find(query).toArray();
-    if (!data) {
+    if (data.length!=0) {
         res.status(200).json({
         status: 200,
         message:"Success",

@@ -6,6 +6,7 @@ import Pagination from "./Pagination";
 import { UserContext } from "../UserContext";
 import SearchBar from "./SearchBar";
 import {TiThumbsUp, TiThumbsDown} from "react-icons/ti"
+import LoadingPage from "./LoadingPage";
 const ProductMenuItem=()=>{
 
     const {skin_concerns} = useParams();
@@ -43,13 +44,13 @@ const ProductMenuItem=()=>{
       const idxOfLastItem=currentPage*itemsPerPage;
       const idxOfFirstItem=idxOfLastItem-itemsPerPage;
       const currentItems=items.slice(idxOfFirstItem,idxOfLastItem);
-
+console.log(currentItems&&items);
     return(
         <Container>
             <div>
-            <SearchBar/>
-            <p>Featured Products</p>
-            {(currentItems&&items)&&<div>
+            {(currentItems&&items)?<div>
+                <SearchBar/>
+                <p>Featured Products</p>
                 <p>{skin_concerns}</p>
             <StyledDiv>
                 {Object.values(currentItems).map((item)=>{
@@ -74,7 +75,7 @@ const ProductMenuItem=()=>{
                     )
                 })}
             </StyledDiv>
-            </div>}</div>
+            </div>:<LoadingPage/>}</div>
         </Container>
     )
 }
@@ -82,6 +83,7 @@ const Container =styled.div`
 display: flex;
 flex-direction: row;
 margin: 30px;
+background-color: #edf2fb;
 `
 const ButtonDiv=styled.div`
 display: flex;

@@ -11,28 +11,34 @@ import FavoriteBin from "./FavoriteBin";
 import DislikeBin from "./DislikeBin";
 import LoadingPage from "./LoadingPage";
 import Profile from "./Profile";
+import {useNavigate} from "react-router-dom";
 
 const Homepage =()=>{
     const {user,isAuthenticated, isLoading}=useAuth0(); 
     const {users}=useContext(UserContext);
     const [flag,setFlag]=useState(false);
+    const navigate=useNavigate();
     useEffect(() => {
         if(isAuthenticated){
         fetch(`/users/${user.name}`)
         // fetch('users/null')
         .then((res) => res.json())
         .then((data) => {
-            if(data.message!="Invalid User"){
+            if(data.message=="Invalid User"){
                 setFlag(true);
             }
         })
-      }
+        }
     }, [isAuthenticated])
 
     if(isLoading){
-        return<div>Loading...</div>;
+        return <LoadingPage/>
     }
-
+    if(flag){
+        setFlag(false)
+        navigate("/createAccount")
+    }
+    console.log(users);
     return(
         <Container>
             <ProductMenu/>
@@ -46,6 +52,7 @@ const Container =styled.div`
 display: flex;
 flex-direction: row;
 justify-content: space-between;
+background-color: #edf2fb;
 `
 const StyledRow=styled.div`
 display: flex;

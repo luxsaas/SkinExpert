@@ -10,20 +10,24 @@ const ProductDetails=()=>{
     const [recommended,setRecommended]=useState(false);
     const [user,setUser]=useState();
     const {activeUser,setActiveUser}=useContext(UserContext);
-
+    const[description,setDescription]=useState(null);
     useEffect(() => {
         fetch(`/users/${activeUser}`)
         .then((res) => res.json())
         .then((data) => {
             setUser(data.data[0]);
         })
+        
     }, [])
     useEffect(() => {
         fetch(`/product/${id}`)
           .then((res) => res.json())
           .then((data) => {
             setItem(data.data);
+            const split=(data.data[0].raw_text).split("Skin Type");
+          setDescription(split[0]);
           });
+
       }, []);
 
     const isRecommended=()=>{
@@ -66,22 +70,22 @@ const ProductDetails=()=>{
             return false
         }
     }
-    console.log(activeUser);
+
     return(
         <Container>
             <ProductMenu/>
             
-            {item&&<StyledDiv>
-                <div>{isRecommended?<p>Recommended</p>:null}
+            {(item&&description)&&<StyledDiv>
+                <StyledSubDiv>
                     <img src={item[0].img_src}></img>
-                </div>
+                </StyledSubDiv>
                 <div>
-                    <p>{item[0].name}</p>
-                    <p>{item[0].brand}</p>
-                    <p>{item[0].raw_text}</p>
-                    <p>{item[0].hearts}</p>
-                    <p>{item[0].skin_concerns}</p>
-                    <p>{item[0].skin_type}</p>
+                    <Title>{item[0].name}</Title>
+                    <Brand>{item[0].brand}</Brand>
+                    <p>{description}</p>
+                    <p>Skin Concerns: {item[0].skin_concerns}</p>
+                    <p>Skin Types: {item[0].skin_type}</p>
+                    {isRecommended?<RecommendedH2>Recommended by SkinExpert</RecommendedH2>:null}
                 </div>
             </StyledDiv>}
         </Container>
@@ -90,9 +94,22 @@ const ProductDetails=()=>{
 const Container =styled.div`
 display: flex;
 flex-direction: row;
+background-color: #edf2fb;
+`
+const StyledSubDiv=styled.div`
+margin-right: 20px;
 `
 const StyledDiv=styled.div`
 display: flex;
 flex-direction: row;
+justify-content: center;
+align-items: center;
+`
+const RecommendedH2 =styled.h2`
+color:#8093f1;
+`
+const Title=styled.h3`
+`
+const Brand=styled.h4`
 `
 export default ProductDetails;

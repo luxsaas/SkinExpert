@@ -23,18 +23,25 @@ const Pagination =({itemsPerPage,totalItems,paginate})=>{
 }
 
 const StyledUl=styled.ul`
+display: flex;
+flex-direction: row;
+justify-content: center;
 
 `
 const StyledLi=styled.li`
 list-style: none;
 display:inline;
 margin-left: 15px;
-border: 1px solid blue;
-border-radius: 50%;
+border: 3px solid #abc4ff;
 padding:5px;
+border-radius: 50%;
+&:hover{
+background-color: #abc4ff ;
+}
 `
 const StyledNav=styled.nav`
-    border: 1px solid blue;
+    /* border:2px solid #abc4ff;
+    border-radius: 10px; */
 `
 const StyledNumber =styled.a`
 color:black;

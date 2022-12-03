@@ -34,6 +34,7 @@ const Brands=()=>{
 const Container =styled.div`
 display: flex;
 flex-direction: row;
+background-color: #edf2fb;
 `
 const StyledDiv=styled.div`
 `

@@ -44,12 +44,13 @@ const Profile=({users, user})=>{
 }
 const MainContainer=styled.div`
 margin-left:50px;
-
+background-color: #edf2fb;
 `
 const Container =styled.div`
 display: flex;
 flex-direction: row;
 justify-content: space-between;
+background-color: #edf2fb;
 
 `
 const StyledRow=styled.div`

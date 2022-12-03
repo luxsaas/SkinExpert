@@ -5,6 +5,7 @@ import {useParams} from 'react-router-dom';
 import Pagination from "./Pagination";
 import { UserContext } from "../UserContext";
 import {TiThumbsUp, TiThumbsDown} from "react-icons/ti";
+import LoadingPage from "./LoadingPage";
 
 const ProductFilterPage=()=>{
     const {category}=useParams();
@@ -59,7 +60,6 @@ const ProductFilterPage=()=>{
         .catch((error)=>{
             window.alert(error);
         })
-        // window.location.reload();
       }
       const idxOfLastItem=currentPage*itemsPerPage;
       const idxOfFirstItem=idxOfLastItem-itemsPerPage;
@@ -69,8 +69,8 @@ const ProductFilterPage=()=>{
     return(
         <Container>
             <ProductMenu/>
-            {(currentItems&&items)&&<SubContainer>
-                <p>{key}</p>
+            <SubContainer>
+                <StyledP>{key}</StyledP>
             <StyledDiv>
                 {Object.values(currentItems).map((item)=>{
                     return (
@@ -85,7 +85,7 @@ const ProductFilterPage=()=>{
                             </Item>
                             <ButtonDiv>
                                 {/* <button>{<TiThumbsUp/>}</button> */}
-                                <button onClick={()=>addToCurrentRoutine(item)}>Add to Routine</button>
+                                <StyledButton onClick={()=>addToCurrentRoutine(item)}>Add to Routine</StyledButton>
                                 {/* <button>{<TiThumbsDown/>}</button> */}
                             </ButtonDiv>
                         </ProductDiv>
@@ -93,13 +93,24 @@ const ProductFilterPage=()=>{
                 })}
             </StyledDiv>
             <Pagination itemsPerPage={itemsPerPage} totalItems={items.length} paginate={paginate} />
-            </SubContainer>}
+            </SubContainer>
         </Container>
     )
 }
+
+const StyledButton=styled.button`
+&:active{
+    background-color:black
+}
+`
+const StyledP=styled.p`
+font-family: serif;
+font-size: 30px;
+`
 const Container =styled.div`
 display: flex;
 flex-direction: row;
+background-color: #edf2fb;
 `
 const SubContainer=styled.div`
 margin-left: 20px;

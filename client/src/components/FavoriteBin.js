@@ -78,9 +78,9 @@ const FavoriteBin=({id})=>{
     // console.log("Array",favoriteArr );
 
     return(
-        <div>
+        <Container>
             <p>Favorites</p>
-            <Favorites ref={drop} style={{ backgroundColor: isOver ? '#c1d3fe' : 'white' }}  >
+            <Favorites ref={drop} style={{ backgroundColor: isOver ? '#c1d3fe' : '#edf2fb' }}  >
                 {favorite&&Object.values(favorite).map((item)=>{
                     if(item!=null){
                     return(
@@ -88,9 +88,13 @@ const FavoriteBin=({id})=>{
                     )}
                 })}
             </Favorites>
-        </div>
+        </Container>
     )
 }
+
+const Container=styled.div`
+
+`
 
 const Favorites =styled.div`
 height:200px;
@@ -100,6 +104,7 @@ text-align: center;
 justify-content: center;
 display:flex;
 flex-direction: row;
+
 `
 
 export default FavoriteBin;

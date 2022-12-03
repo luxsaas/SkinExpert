@@ -1,14 +1,16 @@
 import { useState } from "react";
+import {useAuth0} from "@auth0/auth0-react";
 import styled from "styled-components";
-
-const CreateAnAccount =({name})=>{
+import {useNavigate} from "react-router-dom"
+const CreateAnAccount =()=>{
     const [step1,setStep1]=useState(true);
     const [step2,setStep2]=useState(false);
     const [step3,setStep3]=useState(false);
-
+    const navigate=useNavigate();
+    const {user,isAuthenticated, isLoading}=useAuth0(); 
     const [formState, setFormState] = useState({
         formData: {
-            name:name,
+            name:user.name,
             skinType: '',
             concerns: [],
             typeOfProducts:[],
@@ -29,6 +31,7 @@ const CreateAnAccount =({name})=>{
         // .catch((error)=>{
         //     window.alert(error);
         // })
+        navigate("/home")
         window.location.reload();
     }
     const handleInput = (e) => {
@@ -96,7 +99,7 @@ const CreateAnAccount =({name})=>{
                     <InputDiv><input name="typeOfProducts"type="checkbox"value="Eye Care" onChange={handleInput} ></input><label>Eye Care</label> </InputDiv>
                     <InputDiv><input name="typeOfProducts"type="checkbox"value="Lip Care" onChange={handleInput} ></input><label>Lip Care</label> </InputDiv>
                     <InputDiv><input name="typeOfProducts"type="checkbox"value="Sun Care"onChange={handleInput} ></input><label>Sun Care</label> </InputDiv>
-                    <button onClick={handleSubmit}>Modify</button>
+                    <button onClick={handleSubmit}>Create Account</button>
                 </Step3>
                
             </StyledDiv>
@@ -106,6 +109,7 @@ const CreateAnAccount =({name})=>{
 const Container =styled.div`
 display:flex;
 flex-direction: row;
+background-color: #edf2fb;
 
 `
 const StyledDiv =styled.div`

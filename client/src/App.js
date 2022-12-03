@@ -1,7 +1,6 @@
 import {BrowserRouter,Routes,Route} from "react-router-dom";
 import FrontPage from "./components/FrontPage";
 import Homepage from "./components/Homepage";
-import SignIn from "./components/SignIn";
 import ProductPage from "./components/ProductPage";
 import ProductFilterPage from "./components/ProductFilterPage";
 import ProductFilterPageB from "./components/ProductFilterPageB";
@@ -10,11 +9,13 @@ import Community from "./components/Community";
 import Brands from "./components/Brands";
 import ProductFilterBrand from "./components/ProductFilterBrand";
 import { UserContext } from "./UserContext";
-import { useState,useEffect,useContext } from "react";
+import { useEffect,useContext } from "react";
 import {DndProvider} from "react-dnd";
 import {HTML5Backend} from 'react-dnd-html5-backend';
 import EditProfile from "./components/EditProfile";
 import {useAuth0} from "@auth0/auth0-react";
+import LoadingPage from "./components/LoadingPage";
+import CreateAnAccount from "./components/CreateAccount";
 const App=()=> {
   const {user,isAuthenticated, isLoading}=useAuth0(); 
   const {users,setUsers, activeUser,setActiveUser}=useContext(UserContext);
@@ -24,6 +25,7 @@ const App=()=> {
     // fetch('users/null')
     .then((res) => res.json())
     .then((data) => {
+      console.log(data.data);
         setActiveUser(data.data[0].name);
         setUsers(data.data[0]);
     })
@@ -34,7 +36,6 @@ const App=()=> {
       <DndProvider backend={HTML5Backend}>
         <Routes forceRefresh>
           <Route path="/" element={<FrontPage/>}/>
-          <Route path="/signin" element={<SignIn/>}/>
           <Route path="/home" element={<Homepage/>}/>
           <Route path="/products" element={<ProductPage/>}/>
           <Route path="/products/type/:category" element={<ProductFilterPage/>}/>
@@ -44,6 +45,8 @@ const App=()=> {
           <Route path="/brands" element={<Brands/>}/>
           <Route path="/brands/:brand" element={<ProductFilterBrand/>}/>
           <Route path="/edit-profile" element={<EditProfile/>}/>
+          <Route path="/createAccount" element={<CreateAnAccount/>}/>
+          {/* <Route path="/load" element={<LoadingPage/>}/> */}
         </Routes>
       </DndProvider>
       
