@@ -10,7 +10,7 @@ const Profile=({users, user})=>{
         navigate("/edit-profile");
     }
     return(
-        <div>
+        <MainContainer>
             {(user.name!=undefined)?<div>
                 <ProfileDiv>
                     <div>
@@ -39,13 +39,18 @@ const Profile=({users, user})=>{
                 <DislikeBin/>
             </Container>
         </div>:<CreateAnAccount/>}
-    </div>
+    </MainContainer>
     )
 }
+const MainContainer=styled.div`
+margin-left:50px;
+
+`
 const Container =styled.div`
 display: flex;
 flex-direction: row;
 justify-content: space-between;
+
 `
 const StyledRow=styled.div`
 display: flex;
@@ -57,24 +62,27 @@ margin-right: 5px;
 const CurrentRoutineDiv =styled.div`
 height:250px;
 width:1100px;
-border:1px solid blue;
+border:5px solid #abc4ff;
 display:flex;
 flex-direction:row;
 justify-content:start;
 align-items:center;
+
 `
 const ProfileDiv=styled.div`
 display: flex;
 flex-direction: row;
-justify-content: space-between;
-width:600px;
 padding-top: 10px;
+padding-bottom: 30px;
+border-bottom: 2px solid #abc4ff;
+border-top: 2px solid #abc4ff;
 `
 const StyledImg=styled.img`
 border-radius: 50%;
 width: 100px;
 height: 100px;
 margin-top:60px;
+margin-right: 40px;
 `
 const Name = styled.h2`
 `

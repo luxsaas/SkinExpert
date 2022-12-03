@@ -64,9 +64,9 @@ const ProductFilterBrand=()=>{
                             </ItemDiv>
                         </Item>
                         <ButtonDiv>
-                                <button>{<TiThumbsUp/>}</button>
+                                {/* <button>{<TiThumbsUp/>}</button> */}
                                 <button onClick={()=>addToCurrentRoutine(item)}>Add to Routine</button>
-                                <button>{<TiThumbsDown/>}</button>
+                                {/* <button>{<TiThumbsDown/>}</button> */}
                         </ButtonDiv>
                         </ProductDiv>
                     )}
@@ -84,7 +84,7 @@ flex-direction: row;
 const ButtonDiv=styled.div`
 display: flex;
 flex-direction: row;
-justify-content: space-between;
+justify-content: center;
 `
 const StyledDiv=styled.div`
 display: grid;
@@ -95,9 +95,9 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 margin:5px;
+border:2px solid #abc4ff;
 `
 const ItemDiv=styled.div`
-border:1px solid black;
 width: 200px;
 height:200px;
 display:flex;

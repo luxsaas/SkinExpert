@@ -16,12 +16,12 @@ const ProductFilterPageB=()=>{
     
     useEffect(() => {
         fetch(`/product/concern/${skin_concerns}`)
-          .then((res) => res.json())
-          .then((data) => {
+            .then((res) => res.json())
+            .then((data) => {
             setItems(data.data);
-          });
-      }, []);
-      
+            });
+    }, []);
+    
     const addToCurrentRoutine=(item)=>{
         const formData=item;
         fetch(`/routine/${activeUser}/${item.category}`,{
@@ -64,9 +64,9 @@ const ProductFilterPageB=()=>{
                                 </ItemDiv>
                             </Item>
                             <ButtonDiv>
-                                <button>{<TiThumbsUp/>}</button>
+                                {/* <button>{<TiThumbsUp/>}</button> */}
                                 <button onClick={()=>addToCurrentRoutine(item)}>Add to Routine</button>
-                                <button>{<TiThumbsDown/>}</button>
+                                {/* <button>{<TiThumbsDown/>}</button> */}
                             </ButtonDiv>
                         </ProductDiv>
                     )}
@@ -84,14 +84,13 @@ flex-direction: row;
 const ButtonDiv=styled.div`
 display: flex;
 flex-direction: row;
-justify-content: space-between;
+justify-content: center;
 `
 const StyledDiv=styled.div`
 display: grid;
 grid-template-columns: auto auto auto auto ;
 `
 const ItemDiv=styled.div`
-border:1px solid black;
 width: 200px;
 height:200px;
 display:flex;
@@ -128,5 +127,6 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 margin:5px;
+border:2px solid #abc4ff;
 `
 export default ProductFilterPageB;

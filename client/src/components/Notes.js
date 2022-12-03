@@ -72,7 +72,7 @@ const Notes=({item, handleClick,handleChange, noteForm, setNoteForm,refresh,setR
 }
 
 const Note =styled.p`
-border: 1px solid black;
+border: 1px solid #abc4ff;
 height:7800px;
 width:280px;
 `
@@ -109,7 +109,7 @@ position:fixed;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
-border:1px solid black;
+border:5px solid #abc4ff;
 border-radius: 10px;
 z-index: 10;
 background-color: white;
@@ -127,19 +127,10 @@ flex-direction: row;
 justify-content: space-between;
 
 `
-const Favorites =styled.div`
-height:200px;
-width:500px;
-border:1px solid blue;
-text-align: center;
-justify-content: center;
-display:flex;
-flex-direction: row;
-`
 const Item=styled.div`
 margin:10px;
 padding:10px;
-border:1px solid red;
+border:3px solid #ccdbfd;
 display:flex;
 flex-direction: column;
 align-items: center;

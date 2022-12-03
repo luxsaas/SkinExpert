@@ -149,7 +149,7 @@ justify-content: space-between;
 const Favorites =styled.div`
 height:200px;
 width:500px;
-border:1px solid blue;
+border:5px solid #abc4ff;
 text-align: center;
 justify-content: center;
 display:flex;

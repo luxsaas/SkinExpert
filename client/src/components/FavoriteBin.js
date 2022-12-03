@@ -80,7 +80,7 @@ const FavoriteBin=({id})=>{
     return(
         <div>
             <p>Favorites</p>
-            <Favorites ref={drop} style={{ backgroundColor: isOver ? 'red' : 'white' }}  >
+            <Favorites ref={drop} style={{ backgroundColor: isOver ? '#c1d3fe' : 'white' }}  >
                 {favorite&&Object.values(favorite).map((item)=>{
                     if(item!=null){
                     return(
@@ -92,82 +92,14 @@ const FavoriteBin=({id})=>{
     )
 }
 
-const Note =styled.p`
-border: 1px solid black;
-height:7800px;
-width:280px;
-`
-const StyledP=styled.p`
-margin-right: 180px;
-`
-const NoteInput=styled.textarea`
-width:250px;
-height:300px;
-margin:0;
-padding: 0;
-`
-const StyledDiv=styled.div`
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-align-items: center;
-`
-const Overlay=styled.div`
-position:fixed;
-top:0;
-left:0;
-right:0;
-bottom:0;
-`
-const NotesDiv=styled.div`
-&::after{
-    box-sizing: border-box;
-}
-&::before{
-    box-sizing: border-box;
-}
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-border:1px solid black;
-border-radius: 10px;
-z-index: 10;
-background-color: white;
-width:300px;
-height: 400px;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-`
-
-const ButtonDiv=styled.div`
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-
-`
 const Favorites =styled.div`
 height:200px;
 width:500px;
-border:1px solid blue;
+border:5px solid #abc4ff;
 text-align: center;
 justify-content: center;
 display:flex;
 flex-direction: row;
 `
-const Item=styled.div`
-margin:10px;
-padding:10px;
-border:1px solid red;
-display:flex;
-flex-direction: column;
-align-items: center;
-height:150px;
-`
-const StyledImg=styled.img`
-height: 100px;
 
-`
 export default FavoriteBin;

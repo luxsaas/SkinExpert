@@ -11,7 +11,7 @@ const ProductMenuItem=()=>{
     const {skin_concerns} = useParams();
     const [items,setItems]=useState([]);
     const [currentPage,setCurrentPage]=useState(1);
-    const [itemsPerPage,setItemsPerPage]=useState(32);
+    const [itemsPerPage,setItemsPerPage]=useState(12);
     const {activeUser,setActiveUser} =useContext(UserContext);
 
     useEffect(() => {
@@ -66,9 +66,9 @@ const ProductMenuItem=()=>{
                                 </ItemDiv>
                             </Item>
                             <ButtonDiv>
-                                <button>{<TiThumbsUp/>}</button>
+                                {/* <button>{<TiThumbsUp/>}</button> */}
                                 <button onClick={()=>addToCurrentRoutine(item)}>Add to Routine</button>
-                                <button>{<TiThumbsDown/>}</button>
+                                {/* <button>{<TiThumbsDown/>}</button> */}
                             </ButtonDiv>
                         </ProductDiv>
                     )
@@ -81,11 +81,12 @@ const ProductMenuItem=()=>{
 const Container =styled.div`
 display: flex;
 flex-direction: row;
+margin: 30px;
 `
 const ButtonDiv=styled.div`
 display: flex;
 flex-direction: row;
-justify-content: space-between
+justify-content: center;
 `
 
 const StyledDiv=styled.div`
@@ -93,7 +94,7 @@ display: grid;
 grid-template-columns: auto auto auto auto ;
 `
 const ItemDiv=styled.div`
-border:1px solid black;
+
 width: 200px;
 height:200px;
 display:flex;
@@ -130,6 +131,7 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 margin:5px;
+border:2px solid #abc4ff;
 `
 
 export default ProductMenuItem;

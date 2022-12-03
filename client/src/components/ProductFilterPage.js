@@ -12,6 +12,28 @@ const ProductFilterPage=()=>{
     const [itemsPerPage,setItemsPerPage]=useState(32);
     const [items,setItems]=useState([]);
     const {activeUser,setActiveUser} =useContext(UserContext);
+    let key="";
+    if(category=='cleanser'){
+        key='Cleansers';
+    }
+    else if(category=='moisturizing-cream-oils-mists'){
+        key='Moisturizers';
+    }
+    else if(category=='facial-treatments'){
+        key='Treatments';
+    }
+    else if(category=='eye-treatment-dark-circle-treatment'){
+        key='Eye Care';
+    }
+    else if(category=='facial-treatment-masks'){
+        key='Masks';
+    }
+    else if(category =='sunscreen-sun-protection'){
+        key='Sun Care';
+    }
+    else if(category=='lip-treatments'){
+        key='Lip Care';
+    }
 
       useEffect(() => {
         fetch(`/product/category/${category}`)
@@ -47,8 +69,8 @@ const ProductFilterPage=()=>{
     return(
         <Container>
             <ProductMenu/>
-            {(currentItems&&items)&&<div>
-                <p>{category}</p>
+            {(currentItems&&items)&&<SubContainer>
+                <p>{key}</p>
             <StyledDiv>
                 {Object.values(currentItems).map((item)=>{
                     return (
@@ -62,16 +84,16 @@ const ProductFilterPage=()=>{
                                 </ItemDiv>
                             </Item>
                             <ButtonDiv>
-                                <button>{<TiThumbsUp/>}</button>
+                                {/* <button>{<TiThumbsUp/>}</button> */}
                                 <button onClick={()=>addToCurrentRoutine(item)}>Add to Routine</button>
-                                <button>{<TiThumbsDown/>}</button>
+                                {/* <button>{<TiThumbsDown/>}</button> */}
                             </ButtonDiv>
                         </ProductDiv>
                     )
                 })}
             </StyledDiv>
             <Pagination itemsPerPage={itemsPerPage} totalItems={items.length} paginate={paginate} />
-            </div>}
+            </SubContainer>}
         </Container>
     )
 }
@@ -79,17 +101,19 @@ const Container =styled.div`
 display: flex;
 flex-direction: row;
 `
+const SubContainer=styled.div`
+margin-left: 20px;
+`
 const ButtonDiv=styled.div`
 display: flex;
 flex-direction: row;
-justify-content: space-between;
+justify-content: center;
 `
 const StyledDiv=styled.div`
 display: grid;
 grid-template-columns: auto auto auto auto ;
 `
 const ItemDiv=styled.div`
-border:1px solid black;
 width: 200px;
 height:200px;
 display:flex;
@@ -125,6 +149,7 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 margin:5px;
+border:2px solid #abc4ff;
 `
 
 export default ProductFilterPage;

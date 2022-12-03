@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 import ProductMenu from "./ProductMenu";
 import { UserContext } from "../UserContext";
 const EditProfile=()=>{
-    const [step1,setStep1]=useState(false);
+    const [step1,setStep1]=useState(true);
     const [step2,setStep2]=useState(false);
     const [step3,setStep3]=useState(false);
     const {activeUser,setActiveUser}=useContext(UserContext);
@@ -29,12 +29,12 @@ const EditProfile=()=>{
         .then((data)=>{
             if(data.status=='200'){
                 navigate("/home");
+                window.location.reload();
             }
         })
         .catch((error)=>{
             window.alert(error);
         })
-        
     }
     const handleInput = (e) => {
         const field = e.target.name;
@@ -48,22 +48,38 @@ const EditProfile=()=>{
         setFormState(temp)
         }
     }
-
+    const handleToggle1=()=>{
+        setStep1(false);
+        setStep2(true);
+    }
+    const handleToggle2=()=>{
+        setStep2(false);
+        setStep3(true);
+    }
+    const handleToggle3=()=>{
+        if(step3){
+            setStep3(false);
+        }
+        else{
+            setStep3(true);
+        }
+    }
     return(
         <Container>
             <ProductMenu/>
             <StyledDiv>
                 
                 <h2>Edit Profile</h2>
-                <Step1>
+                <Step1 style={{display:step1?"block":"none"}}>
                     <h3>Step 1</h3>
                     <p>What is your skin type?</p>
                     <InputDiv><input name="skinType"type="radio"value="Oily" onChange={handleInput}  ></input><label>Oily</label> </InputDiv>
                     <InputDiv><input name="skinType"type="radio" value="Dry" onChange={handleInput}  ></input><label>Dry</label> </InputDiv>
                     <InputDiv><input name="skinType"type="radio"value="Combination" onChange={handleInput}  ></input><label>Combination</label> </InputDiv>
                     <InputDiv><input name="skinType"type="radio"value="Normal" onChange={handleInput}  ></input><label>Normal</label> </InputDiv>
+                    <button onClick={handleToggle1}>Next</button>
                 </Step1>
-                <Step2>
+                <Step2 style={{display:step2?"block":"none"}}>
                     <h3>Step 2</h3>
                     <p>What are your skin concerns?</p>
                     <InputDiv><input name="concerns"type="checkbox"value="Acne" onChange={handleInput}  ></input><label>Acne</label> </InputDiv>
@@ -74,8 +90,9 @@ const EditProfile=()=>{
                     <InputDiv><input name="concerns"type="checkbox"value="Dullness" onChange={handleInput}  ></input><label>Dullness</label> </InputDiv>
                     <InputDiv><input name="concerns"type="checkbox"value="Dark Circles"onChange={handleInput}  ></input><label>Dark Circles</label> </InputDiv>
                     <InputDiv><input name="concerns"type="checkbox"value="Redness" onChange={handleInput}  ></input><label>Redness</label> </InputDiv>
+                    <button onClick={handleToggle2}>Next</button>
                 </Step2>
-                <Step3>
+                <Step3 style={{display:step3?"block":"none"}}>
                     <h3>Step 3</h3>
                     <p>What type of products are you interested in?</p>
                     <InputDiv><input name="typeOfProducts"type="checkbox"value="Moisturizers" onChange={handleInput}  ></input><label>Moisturizers</label> </InputDiv>
@@ -85,9 +102,9 @@ const EditProfile=()=>{
                     <InputDiv><input name="typeOfProducts"type="checkbox"value="Eye Care" onChange={handleInput} ></input><label>Eye Care</label> </InputDiv>
                     <InputDiv><input name="typeOfProducts"type="checkbox"value="Lip Care" onChange={handleInput} ></input><label>Lip Care</label> </InputDiv>
                     <InputDiv><input name="typeOfProducts"type="checkbox"value="Sun Care"onChange={handleInput} ></input><label>Sun Care</label> </InputDiv>
-                    <InputDiv><input name="typeOfProducts"type="checkbox"value="Redness"onChange={handleInput} ></input><label>Redness</label> </InputDiv>
+                    <button onClick={handleSubmit}>Modify</button>
                 </Step3>
-                <button onClick={handleSubmit}>Modify</button>
+               
             </StyledDiv>
         </Container>
     )
@@ -95,23 +112,48 @@ const EditProfile=()=>{
 const Container =styled.div`
 display:flex;
 flex-direction: row;
+
 `
 const StyledDiv =styled.div`
 display: flex;
 flex-direction: column;
-align-items: center;
+
 `
 const InputDiv =styled.div`
 display: flex;
 flex-direction: row;
 `
 const Step1 =styled.div`
-
+border: 3px solid #abc4ff;
+width:400px;
+height:300px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+padding-left: 150px;
+margin-left: 250px;
+margin-top:100px;
 `
 const Step2 =styled.div`
-
+border: 3px solid #abc4ff;
+width:400px;
+height:300px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+padding-left: 150px;
+margin-left: 250px;
+margin-top:100px;
 `
 const Step3 =styled.div`
-
+border: 3px solid #abc4ff;
+width:400px;
+height:300px;
+display: flex;
+flex-direction: column;
+justify-content: center;
+padding-left: 150px;
+margin-left: 250px;
+margin-top:100px;
 `
 export default EditProfile;

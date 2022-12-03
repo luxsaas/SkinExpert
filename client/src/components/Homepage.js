@@ -15,7 +15,19 @@ import Profile from "./Profile";
 const Homepage =()=>{
     const {user,isAuthenticated, isLoading}=useAuth0(); 
     const {users}=useContext(UserContext);
-
+    const [flag,setFlag]=useState(false);
+    useEffect(() => {
+        if(isAuthenticated){
+        fetch(`/users/${user.name}`)
+        // fetch('users/null')
+        .then((res) => res.json())
+        .then((data) => {
+            if(data.message!="Invalid User"){
+                setFlag(true);
+            }
+        })
+      }
+    }, [isAuthenticated])
 
     if(isLoading){
         return<div>Loading...</div>;
@@ -24,6 +36,7 @@ const Homepage =()=>{
     return(
         <Container>
             <ProductMenu/>
+            
         {(users) ?<Profile users={users} user={user}/>:<LoadingPage/>}
         </Container>
     )

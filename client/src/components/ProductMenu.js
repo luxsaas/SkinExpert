@@ -65,7 +65,7 @@ const ProductMenu =()=>{
                 <StyledLink href="/products/concern/Hyperpigmentation">Hyperpigmentation</StyledLink>
             </SideBarContent>
             <StyledNavLink href="/brands">Brands</StyledNavLink>
-            <Title to="/community">Community</Title>
+            {/* <Title to="/community">Community</Title> */}
             <LogOutButton/>
         </SideBarItem>
         </Container>
@@ -81,7 +81,6 @@ padding-right:10px ;
 flex-shrink: 0;
 background-color: #edf2fb;
 overflow: auto;
-
 `
 const SideBarItem=styled.div`
 padding:1em;
@@ -96,8 +95,9 @@ display:flex;
 justify-content: space-between;
 cursor: pointer;
 &:hover{
-    background-color: aqua;
+    background-color: #d7e3fc;
 }
+margin-bottom: 10px;
 `
 const ArrowSpan =styled.span`
 `
@@ -117,15 +117,16 @@ const StyledNavLink =styled.a`
 text-decoration: none;
 font-size: 15px;
 &:hover{
-    background-color: aqua;
+    background-color: #d7e3fc;
 }
+margin-bottom: 10px;
 `
 const Title =styled(NavLink)`
 font-size: 25px;
-margin:0;
 padding:0;
 text-decoration: none;
 color:black;
+margin-bottom: 10px;
 `
 const MainTitle= styled.h1`
 font-size: 30px;

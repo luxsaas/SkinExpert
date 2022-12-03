@@ -110,7 +110,7 @@ background-color: inherit;
 overflow-wrap: break-word;
 
 &:hover{
-    background-color: #366C81;
+    background-color: #abc4ff;
     color: white;
 }
 
@@ -132,15 +132,15 @@ padding: 1rem;
 font-size: 16px;
 width: 15rem;
 border: 1px solid black;
-width: 25rem;
-margin: 0 2rem;
+width: 56rem;
+
 border-radius: 10px;
 
 
 &:focus {
 outline: none;
 border-radius: 10px;
-background: aliceblue;
+background: rgba(0,0,0,0.05);
 }
 &::placeholder {
     color: gray;

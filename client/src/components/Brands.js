@@ -18,7 +18,7 @@ const Brands=()=>{
         <Container>
             <ProductMenu/>
             <StyledDiv>
-                <h2>Brands</h2>
+                <Styledh2>Brands</Styledh2>
                 <StyledUl>
                     {brands&&(brands).map((brand)=>{
                         return(
@@ -36,6 +36,9 @@ display: flex;
 flex-direction: row;
 `
 const StyledDiv=styled.div`
+`
+const Styledh2=styled.h2`
+    margin-left: 40px;
 `
 const StyledUl=styled.ul`
 columns: 4;
