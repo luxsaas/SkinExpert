@@ -6,6 +6,7 @@ import CurrentRoutine from "./CurrentRoutine";
 import {useNavigate} from 'react-router-dom';
 const Profile=({users, user})=>{
     const navigate =useNavigate();
+    //when edit profile button is click , it navigates user to edit profile page
     const handleClick=()=>{
         navigate("/edit-profile");
     }

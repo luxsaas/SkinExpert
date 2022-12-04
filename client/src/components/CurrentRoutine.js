@@ -6,6 +6,8 @@ const CurrentRoutine=()=>{
     const [routine,setRoutine]=useState();
     const[refresh,setRefresh]=useState(1);
     const {activeUser,setActiveUser}=useContext(UserContext);
+    
+    //gets Current Routine of activeUser
     useEffect(() => {
         fetch(`/routine/${activeUser}`)
         .then((res) => res.json())

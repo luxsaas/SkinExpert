@@ -4,8 +4,6 @@ import styled from "styled-components";
 import {useParams} from 'react-router-dom';
 import Pagination from "./Pagination";
 import { UserContext } from "../UserContext";
-import {TiThumbsUp, TiThumbsDown} from "react-icons/ti";
-
 
 const ProductFilterBrand=()=>{
     const {brand} = useParams();
@@ -13,22 +11,23 @@ const ProductFilterBrand=()=>{
     const [currentPage,setCurrentPage]=useState(1);
     const [itemsPerPage,setItemsPerPage]=useState(32);
     const {activeUser,setActiveUser} =useContext(UserContext);
+
+    //gets item from a specific brand
     useEffect(() => {
         fetch(`/product/brand/${brand}`)
-          .then((res) => res.json())
-          .then((data) => {
+        .then((res) => res.json())
+        .then((data) => {
             setItems(data.data);
-          });
-      }, []);
+        });
+    }, []);
 
-      const idxOfLastItem=currentPage*itemsPerPage;
-      const idxOfFirstItem=idxOfLastItem-itemsPerPage;
-      const currentItems=items.slice(idxOfFirstItem,idxOfLastItem);
-      let totalItems =0;
-      const paginate=(pageNumber)=>setCurrentPage(pageNumber);
-      console.log(activeUser);
-
-      const addToCurrentRoutine=(item)=>{
+    const idxOfLastItem=currentPage*itemsPerPage;
+    const idxOfFirstItem=idxOfLastItem-itemsPerPage;
+    const currentItems=items.slice(idxOfFirstItem,idxOfLastItem);
+    const paginate=(pageNumber)=>setCurrentPage(pageNumber);
+    
+    // adds product to current routine bin
+    const addToCurrentRoutine=(item)=>{
         const formData=item;
         fetch(`/routine/${activeUser}/${item.category}`,{
             method:"POST",
@@ -44,8 +43,8 @@ const ProductFilterBrand=()=>{
         .catch((error)=>{
             window.alert(error);
         })
-        // window.location.reload();
-      }
+    }
+
     return(
         <Container>
             <ProductMenu/>
@@ -64,9 +63,7 @@ const ProductFilterBrand=()=>{
                             </ItemDiv>
                         </Item>
                         <ButtonDiv>
-                                {/* <button>{<TiThumbsUp/>}</button> */}
                                 <button onClick={()=>addToCurrentRoutine(item)}>Add to Routine</button>
-                                {/* <button>{<TiThumbsDown/>}</button> */}
                         </ButtonDiv>
                         </ProductDiv>
                     )}

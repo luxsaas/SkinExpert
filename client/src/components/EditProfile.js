@@ -16,6 +16,7 @@ const EditProfile=()=>{
             typeOfProducts:[],
         }
     })
+    //updates user information when submitted
     const handleSubmit=()=>{
         fetch(`/users/${activeUser}`,{
             method:"PATCH",
@@ -36,6 +37,7 @@ const EditProfile=()=>{
             window.alert(error);
         })
     }
+    //updates the information when inputs are updated
     const handleInput = (e) => {
         const field = e.target.name;
         const val = e.target.value;
@@ -48,28 +50,23 @@ const EditProfile=()=>{
         setFormState(temp)
         }
     }
+    //removes step1 and displays step2
     const handleToggle1=()=>{
         setStep1(false);
         setStep2(true);
     }
+    //removes step2 and displays step3
     const handleToggle2=()=>{
         setStep2(false);
         setStep3(true);
     }
-    const handleToggle3=()=>{
-        if(step3){
-            setStep3(false);
-        }
-        else{
-            setStep3(true);
-        }
-    }
+
     return(
         <Container>
             <ProductMenu/>
             <StyledDiv>
                 <h2>Edit Profile</h2>
-                <Step1 style={{display:step1?"block":"none"}}>
+                <Steps style={{display:step1?"block":"none"}}>
                     <h3>Step 1</h3>
                     <p>What is your skin type?</p>
                     <InputDiv><input name="skinType"type="radio"value="Oily" onChange={handleInput}  ></input><label>Oily</label> </InputDiv>
@@ -77,8 +74,8 @@ const EditProfile=()=>{
                     <InputDiv><input name="skinType"type="radio"value="Combination" onChange={handleInput}  ></input><label>Combination</label> </InputDiv>
                     <InputDiv><input name="skinType"type="radio"value="Normal" onChange={handleInput}  ></input><label>Normal</label> </InputDiv>
                     <StyledButton onClick={handleToggle1}>Next</StyledButton>
-                </Step1>
-                <Step2 style={{display:step2?"block":"none"}}>
+                </Steps>
+                <Steps style={{display:step2?"block":"none"}}>
                     <h3>Step 2</h3>
                     <p>What are your skin concerns?</p>
                     <InputDiv><input name="concerns"type="checkbox"value="Acne" onChange={handleInput}  ></input><label>Acne</label> </InputDiv>
@@ -90,8 +87,8 @@ const EditProfile=()=>{
                     <InputDiv><input name="concerns"type="checkbox"value="Dark Circles"onChange={handleInput}  ></input><label>Dark Circles</label> </InputDiv>
                     <InputDiv><input name="concerns"type="checkbox"value="Redness" onChange={handleInput}  ></input><label>Redness</label> </InputDiv>
                     <StyledButton onClick={handleToggle2}>Next</StyledButton>
-                </Step2>
-                <Step3 style={{display:step3?"block":"none"}}>
+                </Steps>
+                <Steps style={{display:step3?"block":"none"}}>
                     <h3>Step 3</h3>
                     <p>What type of products are you interested in?</p>
                     <InputDiv><input name="typeOfProducts"type="checkbox"value="Moisturizers" onChange={handleInput}  ></input><label>Moisturizers</label> </InputDiv>
@@ -102,8 +99,7 @@ const EditProfile=()=>{
                     <InputDiv><input name="typeOfProducts"type="checkbox"value="Lip Care" onChange={handleInput} ></input><label>Lip Care</label> </InputDiv>
                     <InputDiv><input name="typeOfProducts"type="checkbox"value="Sun Care"onChange={handleInput} ></input><label>Sun Care</label> </InputDiv>
                     <StyledButton onClick={handleSubmit}>Modify</StyledButton>
-                </Step3>
-               
+                </Steps>
             </StyledDiv>
         </Container>
     )
@@ -136,35 +132,7 @@ const InputDiv =styled.div`
 display: flex;
 flex-direction: row;
 `
-const Step1 =styled.div`
-border: 3px solid #abc4ff;
-width:400px;
-height:300px;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding-left: 50px;
-padding-right: 100px;
-padding-top: 20px;
-
-`
-const Step2 =styled.div`
-border: 3px solid #abc4ff;
-width:400px;
-height:300px;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding-left: 50px;
-padding-right: 100px;
-padding-top: 20px;
-
-
-
-`
-const Step3 =styled.div`
+const Steps =styled.div`
 border: 3px solid #abc4ff;
 width:400px;
 height:300px;

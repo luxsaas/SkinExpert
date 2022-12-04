@@ -9,286 +9,7 @@ const options = {
 require("dotenv").config();
 const { MONGO_URI } = process.env;
 
-
-const getUser=async(req,res)=>{
-    const {name} =req.params;
-    const query={name:name};
-    const client = new MongoClient(MONGO_URI, options);
-try {
-    await client.connect();
-    const db = client.db("SkinExpert");
-    const data = await db.collection("Users").find(query).toArray();
-    if (data.length!=0) {
-        res.status(200).json({
-        status: 200,
-        message:"Success",
-        data: data,
-        });
-    }else{
-        res.status(200).json({
-            status: 200,
-            message:"Invalid User",
-            data: data,
-        })
-    } 
-} catch (err) {
-    res.status(400).json({
-        status: 400,
-        message: "Bad Request",
-    });
-    }
-    client.close();
-}
-
-const addUser = async (req, res) => {
-    const client = new MongoClient(MONGO_URI, options);
-    try {
-        const newItem = req.body;
-        await client.connect();
-        const db = client.db("SkinExpert");
-        console.log(newItem);
-        await db.collection("Users").insertOne(newItem);
-        client.close();
-        return res.status(200).json({
-            status: 200,
-            message: "Success",
-            data: newItem,
-        });
-    } catch (err) {
-        return res.status(400).json({ status: 400, message: "Invalid data!" });
-    }
-};
-const updateUser = async (req, res) => {
-  const client = new MongoClient(MONGO_URI, options);
-  try {
-    const name = req.params.name;
-    const query = { name};
-    const updatedOrder = { $set: { ...req.body } };
-
-    await client.connect();
-    const db = client.db("SkinExpert");
-
-    if (name != null) {
-      await db.collection("Users").updateOne(query, updatedOrder);
-      res.status(200).json({ status: 200, ...req.body });
-    } else {
-      res.status(400).json({ status: 400, message: "Error!" });
-    }
-    client.close();
-  } catch {
-    return res.status(400).json({ status: 400, message: "Invalid data!" });
-  }
-};
-
-const getProducts = async (req, res) => {
-    const client = new MongoClient(MONGO_URI, options);
-    try {
-      await client.connect();
-      const db = client.db("SkinExpert");
-      const result = await db.collection("Products").find().toArray();
-  
-      client.close();
-      if(result.length === 0){
-        res.status(404).json({
-          status: 404,
-          message: "No items found",
-        })
-      }else{
-        res.status(200).json({
-          status: 200,
-          data: result,
-        });
-      }
-    } catch (err) {
-      res.status(400).json({
-        status: 400,
-        message: "Bad Request",
-      });
-    }
-    };
-const getProduct = async (req, res) => {
-        const id=req.params;
-        console.log(id);
-        const client = new MongoClient(MONGO_URI, options);
-        try {
-          await client.connect();
-          const db = client.db("SkinExpert");
-          const result = await db.collection("Products").find(id).toArray();
-      
-          client.close();
-          if(result.length === 0){
-            res.status(404).json({
-              status: 404,
-              message: "No items found",
-            })
-          }else{
-            res.status(200).json({
-              status: 200,
-              data: result,
-            });
-          }
-        } catch (err) {
-          res.status(400).json({
-            status: 400,
-            message: "Bad Request",
-          });
-        }
-        };
-const getProductByCategory = async (req, res) => {
-            const category=req.params;
-            const client = new MongoClient(MONGO_URI, options);
-            try {
-              await client.connect();
-              const db = client.db("SkinExpert");
-              const result = await db.collection("Products").find(category).toArray();
-          
-              client.close();
-              if(result.length === 0){
-                res.status(404).json({
-                  status: 404,
-                  message: "No items found",
-                })
-              }else{
-                res.status(200).json({
-                  status: 200,
-                  data: result,
-                });
-              }
-            } catch (err) {
-              res.status(400).json({
-                status: 400,
-                message: "Bad Request",
-              });
-            }
-        };
-const getProductByConcern = async (req, res) => {
-                const {skin_concern}=req.params;
-                let keys=[];
-                let data =[];
-                if(skin_concern=="Acne"){
-                  keys.push("Acne");
-                  keys.push("Blemishes");
-                }
-                else if(skin_concern=="Pores"){
-                  keys.push("Pores");
-                  keys.push("Uneven Texture")
-                }
-                else if(skin_concern=="Signs of Aging"){
-                  keys.push("Signs of Aging");
-                  keys.push("Loss of Firmness and Elasticity");
-                }
-                else if(skin_concern=="Dark Spots"){
-                  keys.push("Dark Spots");
-                }
-                else if(skin_concern=="Fine Lines and Wrinkles"){
-                  keys.push("Fine Lines and Wrinkles");
-                }
-                else if(skin_concern=="Dullness"){
-                  keys.push("Dullness");
-                }
-                else if(skin_concern=="Puffy Eyes"){
-                  keys.push("Puffiness");
-                }
-                else if(skin_concern=="Redness"){
-                  keys.push("Redness");
-                }
-                else if(skin_concern=="Dryness"){
-                  keys.push("Dryness");
-                }
-                else if(skin_concern=="Hyperpigmentation"){
-                  keys.push("Uneven Skin Tone");
-                }
-                
-                const client = new MongoClient(MONGO_URI, options);
-                try {
-                  await client.connect();
-                  const db = client.db("SkinExpert");
-                  const result = await db.collection("Products").find().toArray();
-                  for(let i=0;i<result.length;i++){
-                    for(let x=0;x<keys.length;x++){
-                      if(result[i].skin_concerns==undefined){
-                        console.log("error" );
-                        console.log(result[i]);
-                      }
-                      if((result[i].skin_concerns).indexOf(keys[x])>=0){
-                        data.push(result[i]);
-                      }
-                    }
-                  }
-                  if(data){
-                    client.close();
-                    res.status(200).json({
-                      status: 200,
-                      data: data,
-                    });
-                  }
-                } catch (err) {
-                  res.status(400).json({
-                    status: 400,
-                    message: err.message,
-                  });
-                }
-            };
-const getProductByBrand = async (req, res) => {
-                const brand=req.params;
-                const client = new MongoClient(MONGO_URI, options);
-                try {
-                  await client.connect();
-                  const db = client.db("SkinExpert");
-                  const result = await db.collection("Products").find(brand).toArray();
-                  client.close();
-                  if(result.length === 0){
-                    res.status(404).json({
-                      status: 404,
-                      message: "No items found",
-                    })
-                  }else{
-                    res.status(200).json({
-                      status: 200,
-                      data: result,
-                    });
-                  }
-                } catch (err) {
-                  res.status(400).json({
-                    status: 400,
-                    message: "Bad Request",
-                  });
-                }
-            };
-const getBrands = async (req, res) => {
-    const client = new MongoClient(MONGO_URI, options);
-    try {
-        await client.connect();
-        const db = client.db("SkinExpert");
-        const data = await db.collection("Products").distinct('brand');
-        if (data) {
-            client.close();
-            return(
-            res.status(200).json({
-            status: 200,
-            data: data,
-            })
-            )
-        }
-        else{
-            client.close();
-            return(
-            res.status(400).json({
-            status: 400
-            })
-            )
-        }
-    } catch (err) {
-        res.status(400).json({
-            status: 400,
-            message: "Bad Request",
-        });
-        }
-        
-};
-
-//--
-
+//get all posts
 const getPosts=async(req,res)=>{
     const {name}=req.params;
     const client = new MongoClient(MONGO_URI, options);
@@ -296,7 +17,6 @@ try {
     await client.connect();
     const db = client.db("SkinExpert");
     const data = await db.collection("Posts").find({name:name}).toArray();
-    console.log(data);
     if (data) {
         client.close();
         return(
@@ -321,6 +41,7 @@ try {
     }
    
 }
+//add post
 const addPost=async(req,res)=>{
     const client = new MongoClient(MONGO_URI, options);
     try {
@@ -346,6 +67,7 @@ const addPost=async(req,res)=>{
         return res.status(400).json({ status: 400, message: "Invalid data!" });
     }
 }
+//adding to current Routine, to favorite bin , and to dislike bin
 const addCurrentRoutine = async (req, res) => {
     const client = new MongoClient(MONGO_URI, options);
         const {step}=req.params;
@@ -380,7 +102,6 @@ const addCurrentRoutine = async (req, res) => {
         else if(step=="Dislike"){
           key='Dislike'
         }
-        console.log(key);
     try {
         const item = req.body;
         await client.connect();
@@ -412,7 +133,7 @@ const addCurrentRoutine = async (req, res) => {
         return res.status(400).json({ status: 400, message: "Invalid data!" });
     }
 }
-
+//deleting item from current routine
 const deleteCurrentRoutine = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const {step}=req.params;
@@ -460,8 +181,7 @@ try {
     return res.status(400).json({ status: 400, message: "Invalid data!" });
   }
 }
-
-
+//deleting item from favorite bin
 const deleteIteminBin = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const {_id}=req.params;
@@ -487,6 +207,7 @@ try {
     return res.status(400).json({ status: 400, message: "Invalid data!" });
   }
 }
+//deleting item from dislike bin
 const deleteIteminBin2 = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const {_id}=req.params;
@@ -512,6 +233,7 @@ try {
     return res.status(400).json({ status: 400, message: "Invalid data!" });
   }
 }
+//adding message to item in favorite bin
 const addMessage = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const {_id}=req.params;
@@ -537,6 +259,7 @@ try {
     return res.status(400).json({ status: 400, message: "Invalid data!" });
   }
 }
+//adding message to item in dislike bin
 const addMessage2 = async (req, res) => {
   const client = new MongoClient(MONGO_URI, options);
   const {_id}=req.params;
@@ -562,7 +285,7 @@ try {
     return res.status(400).json({ status: 400, message: "Invalid data!" });
   }
 }
-
+//get all bin information of a specific user
 const getRoutine=async(req,res)=>{
     const {activeUser}=req.params;
     const client = new MongoClient(MONGO_URI, options);
@@ -595,9 +318,7 @@ try {
 }
 
 module.exports = {
-    getUser,addUser,updateUser,
-    getProducts,getProduct,getProductByCategory,getProductByConcern,getProductByBrand,
-    getBrands,addCurrentRoutine,getRoutine,deleteIteminBin,deleteIteminBin2,deleteCurrentRoutine,
+    addCurrentRoutine,getRoutine,deleteIteminBin,deleteIteminBin2,deleteCurrentRoutine,
     addMessage,addMessage2,
     getPosts,addPost
 };

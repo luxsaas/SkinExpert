@@ -35,16 +35,16 @@ const ProductFilterPage=()=>{
     else if(category=='lip-treatments'){
         key='Lip Care';
     }
-
-      useEffect(() => {
+    //get items for the specific category
+    useEffect(() => {
         fetch(`/product/category/${category}`)
-          .then((res) => res.json())
-          .then((data) => {
+        .then((res) => res.json())
+        .then((data) => {
             setItems(data.data);
-          });
-      }, []);
-      
-      const addToCurrentRoutine=(item)=>{
+        });
+    }, []);
+    //adds product to current routine bin
+    const addToCurrentRoutine=(item)=>{
         const formData=item;
         fetch(`/routine/${activeUser}/${item.category}`,{
             method:"POST",
@@ -60,11 +60,11 @@ const ProductFilterPage=()=>{
         .catch((error)=>{
             window.alert(error);
         })
-      }
-      const idxOfLastItem=currentPage*itemsPerPage;
-      const idxOfFirstItem=idxOfLastItem-itemsPerPage;
-      const currentItems=items.slice(idxOfFirstItem,idxOfLastItem);
-      const paginate=(pageNumber)=>setCurrentPage(pageNumber);
+    }
+    const idxOfLastItem=currentPage*itemsPerPage;
+    const idxOfFirstItem=idxOfLastItem-itemsPerPage;
+    const currentItems=items.slice(idxOfFirstItem,idxOfLastItem);
+    const paginate=(pageNumber)=>setCurrentPage(pageNumber);
 
     return(
         <Container>

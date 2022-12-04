@@ -1,4 +1,6 @@
 import styled from "styled-components";
+
+//handles all the pagination when it comes to displaying products
 const Pagination =({itemsPerPage,totalItems,paginate})=>{
     const pageNumbers=[];
     for(let i=1;i<=Math.ceil(totalItems/itemsPerPage);i++){
@@ -40,8 +42,6 @@ background-color: #abc4ff ;
 }
 `
 const StyledNav=styled.nav`
-    /* border:2px solid #abc4ff;
-    border-radius: 10px; */
 `
 const StyledNumber =styled.a`
 color:black;

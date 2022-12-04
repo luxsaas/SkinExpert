@@ -12,7 +12,7 @@ const Product=({item,id,refresh,setRefresh})=>{
             isDragging:!!monitor.isDragging(),
         }),
     }));
-
+//removes item from current routine bin
     const handleClick=(category)=>{
         
         fetch(`/currentroutine/${activeUser}/${category}`,{
@@ -28,7 +28,6 @@ const Product=({item,id,refresh,setRefresh})=>{
         // .catch((error)=>{
         //     window.alert(error);
         // })
-            // window.location.reload();
             setRefresh(refresh+1);
     }
 
@@ -57,14 +56,15 @@ flex-direction: row;
 justify-content: center;
 `
 const Item=styled.div`
-margin:10px;
 padding:10px;
 border:1px solid red;
 display:flex;
 flex-direction: column;
+justify-content: center;
 align-items: center;
-height:180px;
-/* cursor: move; */
+height:200px;
+width: 200px;
+
 &:hover{
     opacity:0.5;
 }

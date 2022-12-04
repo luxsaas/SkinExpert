@@ -5,14 +5,14 @@ import {NavLink} from "react-router-dom";
 const Brands=()=>{
     const [brands,setBrands]=useState(null);
 
+    //gets list of brands
     useEffect(() => {
         fetch(`/brands`)
-          .then((res) => res.json())
-          .then((data) => {
+            .then((res) => res.json())
+            .then((data) => {
             setBrands(data.data);
-          });
-      }, []);
-
+        });
+    }, []);
 
     return(
         <Container>

@@ -4,7 +4,6 @@ import ProductMenu from './ProductMenu';
 import { useState, useEffect,useContext } from "react";
 import Pagination from "./Pagination";
 import { UserContext } from "../UserContext";
-import {TiThumbsUp, TiThumbsDown} from "react-icons/ti"
 
 const ProductFilterPageB=()=>{
 
@@ -13,7 +12,7 @@ const ProductFilterPageB=()=>{
     const [currentPage,setCurrentPage]=useState(1);
     const [itemsPerPage,setItemsPerPage]=useState(32);
     const {activeUser,setActiveUser} =useContext(UserContext);
-    
+    //gets items per skin concerns
     useEffect(() => {
         fetch(`/product/concern/${skin_concerns}`)
             .then((res) => res.json())
@@ -21,7 +20,7 @@ const ProductFilterPageB=()=>{
             setItems(data.data);
             });
     }, []);
-    
+    //adds item to current routine bin
     const addToCurrentRoutine=(item)=>{
         const formData=item;
         fetch(`/routine/${activeUser}/${item.category}`,{
@@ -38,14 +37,12 @@ const ProductFilterPageB=()=>{
         .catch((error)=>{
             window.alert(error);
         })
-        // window.location.reload();
     }
-      const idxOfLastItem=currentPage*itemsPerPage;
-      const idxOfFirstItem=idxOfLastItem-itemsPerPage;
-      const currentItems=items.slice(idxOfFirstItem,idxOfLastItem);
-      const paginate=(pageNumber)=>setCurrentPage(pageNumber);
+    const idxOfLastItem=currentPage*itemsPerPage;
+    const idxOfFirstItem=idxOfLastItem-itemsPerPage;
+    const currentItems=items.slice(idxOfFirstItem,idxOfLastItem);
+    const paginate=(pageNumber)=>setCurrentPage(pageNumber);
 
-    console.log(items);
     return(
         <Container>
             <ProductMenu/>
@@ -64,9 +61,7 @@ const ProductFilterPageB=()=>{
                                 </ItemDiv>
                             </Item>
                             <ButtonDiv>
-                                {/* <button>{<TiThumbsUp/>}</button> */}
                                 <button onClick={()=>addToCurrentRoutine(item)}>Add to Routine</button>
-                                {/* <button>{<TiThumbsDown/>}</button> */}
                             </ButtonDiv>
                         </ProductDiv>
                     )}

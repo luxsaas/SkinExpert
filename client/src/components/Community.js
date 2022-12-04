@@ -7,21 +7,23 @@ const Community=()=>{
     const [posts,setPosts]=useState(null);
     const [formData,setFormData]=useState({name:user.name});
     
+    //gets all the posts
     useEffect(() => {
         if(isAuthenticated){
         fetch(`/posts/${user.name}`)
-          .then((res) => res.json())
-          .then((data) => {
+            .then((res) => res.json())
+            .then((data) => {
             setPosts(data.data);
-          });
+        });
         }
-      }, []);
+    }, []);
 
+      //updates whats being written in the input 
     const handleChangeForm=(key,value)=>{
         setFormData({...formData,[key]:value})
-        // console.log(key);
     }
 
+    //posts the blog in the forum
     const handleClick=()=>{
             fetch(`/posts`,{
             method:"POST",
@@ -93,13 +95,10 @@ border: 3px solid #abc4ff;
 border-radius:10px;
 color:black;
 font-weight: bold;
-
 margin-left:10px;
 margin-right:10px;
 padding:5px;
-
 `
-
 const SubmitDiv=styled.div`
 display:flex;
 flex-direction: row;

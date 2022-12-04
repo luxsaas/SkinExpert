@@ -4,22 +4,25 @@ const morgan=require("morgan");
 const port = 8000;
 
 const {
-    getUser,addUser,
-    getProducts,
     getPosts,
     addPost,
-    getProduct,
-    getProductByCategory,
-    getProductByBrand,
-    getBrands,
-    getProductByConcern,
     addCurrentRoutine,
     getRoutine,
     deleteIteminBin,
     deleteIteminBin2,
-    updateUser,
     addMessage,addMessage2,
     deleteCurrentRoutine} = require("./handlers.js");
+
+const {
+    getUser,addUser,
+    updateUser} = require("./handlers.user.js");
+const {
+    getProducts,getProduct,
+    getProductByCategory,
+    getProductByBrand,
+    getBrands,
+    getProductByConcern} = require("./handlers.products");
+
 express()
 
     .use(express.json())

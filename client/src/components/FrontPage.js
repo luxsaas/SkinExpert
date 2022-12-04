@@ -6,9 +6,7 @@ import face from "./face.png"
 const FrontPage =()=>{
     const {user,isAuthenticated, isLoading}=useAuth0();
     const navigate =useNavigate();
-    // if(isLoading){
-    //     return<div>Loading...</div>;
-    // }
+
     return(
         <Container>
             {(isAuthenticated&&!isLoading)?(navigate("/home"))

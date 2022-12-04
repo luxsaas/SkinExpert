@@ -2,15 +2,16 @@ import styled from "styled-components";
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../UserContext";
 import {useDrop} from "react-dnd";
-
 import Notes from "./Notes";
-const DislikeBin=({id})=>{
+import DislikeNotes from "./DislikeNotes";
+
+const DislikeBin=()=>{
     const [favorite,setFavorite]=useState([]);
     const [refresh,setRefresh]=useState(1);
     const {activeUser,setActiveUser}=useContext(UserContext);
     const [noteForm,setNoteForm]=useState(null);
     let favoriteArr = [];
-
+// logic to implement the Drop technique
     const [{canDrop, isOver},drop]=useDrop(()=>({
         accept:"image",
         drop:(item)=>addItemToBoard(item),
@@ -20,7 +21,7 @@ const DislikeBin=({id})=>{
         })
     })
     )
-
+//get message for the items in dislike bin
     useEffect(() => {
         fetch(`/routine/${activeUser}`)
         .then((res) => res.json())
@@ -32,6 +33,8 @@ const DislikeBin=({id})=>{
             setNoteForm(favorite?.message);
         })
     }, [refresh])
+
+    //adds item to dislike bin when item is dropped in dislike bin 
     const addItemToBoard=(item)=>{
         favoriteArr.push(item);
         setFavorite(favoriteArr);
@@ -50,6 +53,7 @@ const DislikeBin=({id})=>{
             window.alert(error);
         })
     }
+    //updates the dislike bin when the message/note is saved
     const handleClick=(_id,item)=>{
         fetch(`/routine2/${activeUser}/${_id}`,{
             method:"PATCH",
@@ -67,7 +71,7 @@ const DislikeBin=({id})=>{
         setRefresh(refresh+1);
     }
     
-
+    //takes the changes in the note and updates noteform
     const handleChange=(e)=>{
         setNoteForm(e.target.value);
     }
@@ -79,7 +83,7 @@ const DislikeBin=({id})=>{
                 {favorite&&Object.values(favorite).map((item)=>{
                     if(item!=null){
                     return(
-                        <Notes item={item}  handleClick={handleClick} handleChange={handleChange} noteForm={noteForm} setNoteForm={setNoteForm} refresh={refresh} setRefresh={setRefresh} key="Dislike"/>
+                        <DislikeNotes item={item}  handleClick={handleClick} handleChange={handleChange} noteForm={noteForm} setNoteForm={setNoteForm} refresh={refresh} setRefresh={setRefresh}/>
                     )}
                 })}
             </Favorites>

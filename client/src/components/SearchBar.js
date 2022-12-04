@@ -10,7 +10,7 @@ const SearchBar =()=>{
     const [isSearchContainerOpen, setIsSearchContainerOpen] = useState(false);
     const [input, setInput] = useState('');
     const navigate = useNavigate();
-
+//get item information
 useEffect(() => {
     if(!loaded){
         const itemsArr = []
@@ -30,6 +30,7 @@ useEffect(() => {
         })
     }
 },[])    
+//search container opens if there are outputs to the search query
 useEffect(() => {
     if(input.length !== 0){
         setIsSearchContainerOpen(true)
@@ -37,11 +38,11 @@ useEffect(() => {
         setIsSearchContainerOpen(false)
     }
 }, [input])
-
+//checking matches from the search query and seting it as input
 const checkMatch = (e) =>  {
     setInput(e.target.value)
 }
-
+//if item is clicked in search container, it goes to the product detail page
 const handleClick = (id) => {
     navigate(`/products/detail/${id}`)
     setInput('')
@@ -63,10 +64,6 @@ return (
             {items.length !== 0
             ?
             Object.values(items).map((item) => {
-                // console.log(item);
-                if(item.name==undefined){
-                    console.log(item);
-                }
                 if((item.name).toLowerCase().includes(input.toLocaleLowerCase())){
                 return <SearchItem onClick={()=> {handleClick(item.id)}}>
                     {item.name}

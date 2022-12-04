@@ -7,10 +7,10 @@ import { UserContext } from '../UserContext';
 const ProductDetails=()=>{
     const {id}=useParams();
     const [item,setItem]=useState(null);
-    const [recommended,setRecommended]=useState(false);
     const [user,setUser]=useState();
     const {activeUser,setActiveUser}=useContext(UserContext);
     const[description,setDescription]=useState(null);
+    //gets user information
     useEffect(() => {
         fetch(`/users/${activeUser}`)
         .then((res) => res.json())
@@ -18,7 +18,8 @@ const ProductDetails=()=>{
             setUser(data.data[0]);
         })
         
-    }, [])
+    }, [activeUser])
+    //gets product information
     useEffect(() => {
         fetch(`/product/${id}`)
           .then((res) => res.json())
@@ -29,14 +30,16 @@ const ProductDetails=()=>{
           });
 
       }, []);
-
+    //checks if the product is recommended depending on user's profile
     const isRecommended=()=>{
         let flag2=false;
         let key=null;
-        let flag=Object.values(user.concerns).map((concern)=>{
+        let flag=false;
+        Object.values(user.concerns).map((concern)=>{
             if(((item[0].skin_concerns).indexOf(concern)>=0)&&
             ((item[0].skin_type).indexOf(user.skinType)>=0)){
-                return true
+                flag=true;
+                return flag;
             }
             else{return false}
         })
@@ -64,6 +67,7 @@ const ProductDetails=()=>{
             if((user.typeOfProducts).indexOf(key)>=0){
                 flag2=true;
             }
+        
         if(flag&&flag2){
             return true
         }else{
@@ -75,7 +79,7 @@ const ProductDetails=()=>{
         <Container>
             <ProductMenu/>
             
-            {(item&&description)&&<StyledDiv>
+            {(user&&description)&&<StyledDiv>
                 <StyledSubDiv>
                     <img src={item[0].img_src}></img>
                 </StyledSubDiv>
@@ -85,7 +89,7 @@ const ProductDetails=()=>{
                     <p>{description}</p>
                     <p>Skin Concerns: {item[0].skin_concerns}</p>
                     <p>Skin Types: {item[0].skin_type}</p>
-                    {isRecommended?<RecommendedH2>Recommended by SkinExpert</RecommendedH2>:null}
+                    {isRecommended()?<RecommendedH2>Recommended by SkinExpert</RecommendedH2>:null}
                 </div>
             </StyledDiv>}
         </Container>

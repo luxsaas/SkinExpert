@@ -8,7 +8,7 @@ const ProductMenu =()=>{
     const [sidebar1,setSidebar1]=useState(false);
     const [sidebar2,setSidebar2]=useState(false);
     const navigate=useNavigate();
-
+//toggles display of the subcategory when Type of Products
     const handleClick=()=>{
         if(sidebar1==false){
             setSidebar1(true);
@@ -17,6 +17,7 @@ const ProductMenu =()=>{
             setSidebar1(false);
         }
     }
+//toggles display of the subcategory when skin concerns
     const handleClick2=()=>{
         if(sidebar2==false){
             setSidebar2(true);
@@ -24,9 +25,6 @@ const ProductMenu =()=>{
         else{
             setSidebar2(false);
         }
-    }
-    const handleClick3=()=>{
-        navigate("/brands");
     }
     
     return(

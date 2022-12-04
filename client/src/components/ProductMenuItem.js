@@ -1,11 +1,8 @@
 import styled from "styled-components";
 import {useParams} from 'react-router-dom';
-import ProductMenu from './ProductMenu';
 import { useState, useEffect,useContext } from "react";
-import Pagination from "./Pagination";
 import { UserContext } from "../UserContext";
 import SearchBar from "./SearchBar";
-import {TiThumbsUp, TiThumbsDown} from "react-icons/ti"
 import LoadingPage from "./LoadingPage";
 const ProductMenuItem=()=>{
 
@@ -14,15 +11,16 @@ const ProductMenuItem=()=>{
     const [currentPage,setCurrentPage]=useState(1);
     const [itemsPerPage,setItemsPerPage]=useState(12);
     const {activeUser,setActiveUser} =useContext(UserContext);
-
+//get all items
     useEffect(() => {
         fetch(`/products`)
-          .then((res) => res.json())
-          .then((data) => {
+        .then((res) => res.json())
+        .then((data) => {
             setItems(data.data);
-          });
-      }, []);
-      
+        });
+    }, []);
+    
+    //adds item to current routine bin 
     const addToCurrentRoutine=(item)=>{
         const formData=item;
         fetch(`/routine/${activeUser}/${item.category}`,{
@@ -39,11 +37,10 @@ const ProductMenuItem=()=>{
         .catch((error)=>{
             window.alert(error);
         })
-        // window.location.reload();
     }
-      const idxOfLastItem=currentPage*itemsPerPage;
-      const idxOfFirstItem=idxOfLastItem-itemsPerPage;
-      const currentItems=items.slice(idxOfFirstItem,idxOfLastItem);
+    const idxOfLastItem=currentPage*itemsPerPage;
+    const idxOfFirstItem=idxOfLastItem-itemsPerPage;
+    const currentItems=items.slice(idxOfFirstItem,idxOfLastItem);
     return(
         <Container>
             <div>
@@ -54,7 +51,6 @@ const ProductMenuItem=()=>{
             <StyledDiv>
                 
                 {Object.values(currentItems).map((item)=>{
-                    const concerns=item.skin_concerns;
                     return (
                         <ProductDiv>
                             <Item href={`/products/detail/${item.id}`}>
@@ -66,9 +62,7 @@ const ProductMenuItem=()=>{
                                 </ItemDiv>
                             </Item>
                             <ButtonDiv>
-                                {/* <button>{<TiThumbsUp/>}</button> */}
                                 <button onClick={()=>addToCurrentRoutine(item)}>Add to Routine</button>
-                                {/* <button>{<TiThumbsDown/>}</button> */}
                             </ButtonDiv>
                         </ProductDiv>
                     )
