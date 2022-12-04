@@ -23,5 +23,6 @@ font-size: 20px;
 border: 4px solid #abc4ff;
 border-radius: 20px;
 padding: 5px;
+font-family: serif;
 `
 export default LoginButton;

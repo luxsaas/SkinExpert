@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ProductMenu from "./ProductMenu";
-
+import {useAuth0} from "@auth0/auth0-react";
 const Community=()=>{
+    const {user,isAuthenticated, isLoading}=useAuth0(); 
     const [posts,setPosts]=useState(null);
-    const [formData,setFormData]=useState({});
+    const [formData,setFormData]=useState({name:user.name});
     
     useEffect(() => {
-        fetch("/posts")
+        if(isAuthenticated){
+        fetch(`/posts/${user.name}`)
           .then((res) => res.json())
           .then((data) => {
-            console.log(data.data);
+            setPosts(data.data);
           });
+        }
       }, []);
 
     const handleChangeForm=(key,value)=>{
@@ -31,14 +34,14 @@ const Community=()=>{
         .then(res=>res.json())
         .then((data)=>{
         })
-        .catch((error)=>{
-            window.alert(error);
-        })
+        // .catch((error)=>{
+        //     window.alert(error);
+        // })
     }
     return(
         <Container>
             <ProductMenu/>
-            <div>
+            <SubContainer>
                 <StyledForm >
                 <h1>Community Page</h1>
                 <StyledDiv>
@@ -48,48 +51,53 @@ const Community=()=>{
                     type="text"></StyledInput>
                 </StyledDiv>
                 <SubmitDiv>
-                    <StyledP></StyledP>
                     <SubmitButton onClick={handleClick} >Send</SubmitButton>
                 </SubmitDiv>
                 </StyledForm>
-                <StyledDiv>
+                <div>
                 {posts&&Object.values(posts).map((post)=>{
                         return(
-                            <div>
-                                <p>{post.status}</p>
-                            </div>
+                            <PostsDiv>
+                                <StyledImg src={user.picture}></StyledImg>
+                                <StyledP>{post.status}</StyledP>
+                            </PostsDiv>
                         )
                     })}
-                </StyledDiv>
+                </div>
 
-            </div>
+            </SubContainer>
         </Container>
     )
 }
+
+
 const Container=styled.div`
 display:flex;
 flex-direction: row;
+background-color: #edf2fb;
+
 `
 const StyledP=styled.p`
-
+margin-left:30px;
+`
+const SubContainer=styled.div`
+padding-left:40px;
+padding-top:20px;
 `
 const StyledForm=styled.form`
-border:1px solid black;
+border: 3px solid #abc4ff;
+
 `
 const SubmitButton=styled.button`
+border: 3px solid #abc4ff;
 border-radius:10px;
-background-color: aliceblue;
 color:black;
 font-weight: bold;
-border-color: blue;
-height:20px;
+
 margin-left:10px;
 margin-right:10px;
+padding:5px;
 
-&:disabled{
-    background-color: aliceblue;
-    border-color: blue;
-}
 `
 
 const SubmitDiv=styled.div`
@@ -108,7 +116,7 @@ margin-top: 10px;
 margin-bottom:10px;
 margin-right:10px;
 
-border-color:black;
+border-color:#abc4ff;
 `
 
 const StyledDiv=styled.div`
@@ -125,5 +133,12 @@ margin-bottom:10px;
 margin-left:10px;
 border-radius: 50%;
 
+`
+const PostsDiv=styled.div`
+display:flex;
+flex-direction:row;
+align-items:center;
+border: 3px solid #abc4ff;
+height:150px;
 `
 export default Community;

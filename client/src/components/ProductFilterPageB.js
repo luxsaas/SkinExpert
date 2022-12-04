@@ -50,7 +50,7 @@ const ProductFilterPageB=()=>{
         <Container>
             <ProductMenu/>
             {(currentItems&&items)&&<div>
-                <p>{skin_concerns}</p>
+                <Styledh3>{skin_concerns}</Styledh3>
             <StyledDiv>
                 {Object.values(currentItems).map((item)=>{
                     return (
@@ -77,6 +77,10 @@ const ProductFilterPageB=()=>{
         </Container>
     )
 }
+const Styledh3=styled.h3`
+font-family: serif;
+font-weight: bold;
+`
 const Container =styled.div`
 display: flex;
 flex-direction: row;

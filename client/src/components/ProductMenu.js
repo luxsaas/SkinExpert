@@ -65,7 +65,7 @@ const ProductMenu =()=>{
                 <StyledLink href="/products/concern/Hyperpigmentation">Hyperpigmentation</StyledLink>
             </SideBarContent>
             <StyledNavLink href="/brands">Brands</StyledNavLink>
-            {/* <Title to="/community">Community</Title> */}
+            <Title to="/community">Community</Title>
             <LogOutButton/>
         </SideBarItem>
         </Container>
@@ -81,6 +81,7 @@ padding-right:10px ;
 flex-shrink: 0;
 background-color: #edf2fb;
 overflow: auto;
+border-right:1px solid #abc4ff;
 `
 const SideBarItem=styled.div`
 padding:1em;
@@ -88,7 +89,7 @@ font-size: 1.2em;
 display: flex;
 flex-direction: column;
 transition: background-color .15s;
-
+font-family: serif;
 `
 const SideBarTitle=styled.div`
 display:flex;
@@ -98,28 +99,39 @@ cursor: pointer;
     background-color: #d7e3fc;
 }
 margin-bottom: 10px;
+font-family: serif;
 `
 const ArrowSpan =styled.span`
 `
 const StyledSpan =styled.span`
 display: inline-block;
 width:10em;
-font-size: 15px;
+font-size: 18px;
+font-family: serif;
 `
 const SideBarContent =styled.div`
 flex-direction: column;
 padding-top:.25em;
+padding-bottom:1em;
 `
 const StyledLink =styled.a`
 text-decoration: none;
+font-family: serif;
+&:hover{
+    background-color: #e2eafc;
+}
+font-size: 15px;
+color:black;
 `
 const StyledNavLink =styled.a`
 text-decoration: none;
-font-size: 15px;
+font-size: 18px;
 &:hover{
     background-color: #d7e3fc;
 }
 margin-bottom: 10px;
+font-family: serif;
+color:black;
 `
 const Title =styled(NavLink)`
 font-size: 25px;
@@ -127,6 +139,9 @@ padding:0;
 text-decoration: none;
 color:black;
 margin-bottom: 10px;
+&:hover{
+    background-color: #d7e3fc;
+}
 `
 const MainTitle= styled.h1`
 font-size: 30px;

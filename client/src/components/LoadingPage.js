@@ -33,6 +33,8 @@ const Container=styled.div`
 display: flex;
 flex-direction: row;
 justify-content: center;
-height:80vh;
+height:800px;
+width:80vw;
+padding-left: 120px;
 background-color: #edf2fb;
 `

@@ -19,5 +19,11 @@ const StyledButton=styled.button`
 margin-top:10px;
 height:30px;
 width:70px;
+border: 3px solid #abc4ff;
+border-radius:10px;
+font-family: serif;
+&:active{
+    background-color: #abc4ff;
+}
 `
 export default LogOutButton;

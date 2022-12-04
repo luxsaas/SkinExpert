@@ -40,6 +40,7 @@ const StyledDiv=styled.div`
 `
 const Styledh2=styled.h2`
     margin-left: 40px;
+    font-family: serif;
 `
 const StyledUl=styled.ul`
 columns: 4;
@@ -47,6 +48,7 @@ list-style: none;
 `
 const StyledLi=styled.li`
 padding-bottom: 10px;
+font-family: serif;
 `
 const StyledLink=styled(NavLink)`
 text-decoration: none;

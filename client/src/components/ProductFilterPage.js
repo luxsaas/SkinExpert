@@ -70,7 +70,7 @@ const ProductFilterPage=()=>{
         <Container>
             <ProductMenu/>
             <SubContainer>
-                <StyledP>{key}</StyledP>
+                <Styledh3>{key}</Styledh3>
             <StyledDiv>
                 {Object.values(currentItems).map((item)=>{
                     return (
@@ -103,9 +103,9 @@ const StyledButton=styled.button`
     background-color:black
 }
 `
-const StyledP=styled.p`
+const Styledh3=styled.h3`
 font-family: serif;
-font-size: 30px;
+font-weight: bold;
 `
 const Container =styled.div`
 display: flex;

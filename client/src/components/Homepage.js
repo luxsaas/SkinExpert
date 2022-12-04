@@ -31,19 +31,15 @@ const Homepage =()=>{
         }
     }, [isAuthenticated])
 
-    if(isLoading){
-        return <LoadingPage/>
-    }
     if(flag){
         setFlag(false)
         navigate("/createAccount")
     }
-    console.log(users);
     return(
         <Container>
+            {(users&&!isLoading) ?<Container>
             <ProductMenu/>
-            
-        {(users) ?<Profile users={users} user={user}/>:<LoadingPage/>}
+            <Profile users={users} user={user}/></Container>:<LoadingPage/>}
         </Container>
     )
     

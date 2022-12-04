@@ -18,7 +18,7 @@ const {
     deleteIteminBin,
     deleteIteminBin2,
     updateUser,
-    addMessage,
+    addMessage,addMessage2,
     deleteCurrentRoutine} = require("./handlers.js");
 express()
 
@@ -26,7 +26,7 @@ express()
     .use(helmet())
     .use(morgan('tiny'))
 
-    .get('/users/:user',getUser)
+    .get('/users/:name',getUser)
     .post('/users',addUser)
     .patch('/users/:name',updateUser)
     .get('/products',getProducts)
@@ -35,7 +35,7 @@ express()
     .get('/product/concern/:skin_concern',getProductByConcern)
     .get('/product/brand/:brand',getProductByBrand)
     .get('/brands',getBrands)
-    .get('/posts',getPosts)
+    .get('/posts/:user',getPosts)
     .post('/posts',addPost)
     .post('/routine/:activeUser/:step',addCurrentRoutine)
     .patch('/currentroutine/:activeUser/:step',deleteCurrentRoutine)
@@ -43,6 +43,7 @@ express()
     .patch('/routine2/:activeUser/:_id',deleteIteminBin2)
     .get('/routine/:activeUser',getRoutine)
     .post('/message/:activeUser/:_id',addMessage)
+    .post('/message2/:activeUser/:_id',addMessage2)
 
 
     

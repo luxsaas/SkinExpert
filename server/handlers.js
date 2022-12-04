@@ -11,8 +11,8 @@ const { MONGO_URI } = process.env;
 
 
 const getUser=async(req,res)=>{
-    const user =req.params.user;
-    const query={name:user};
+    const {name} =req.params;
+    const query={name:name};
     const client = new MongoClient(MONGO_URI, options);
 try {
     await client.connect();
@@ -255,46 +255,47 @@ const getProductByBrand = async (req, res) => {
                   });
                 }
             };
-        const getBrands = async (req, res) => {
-            const client = new MongoClient(MONGO_URI, options);
-            try {
-                await client.connect();
-                const db = client.db("SkinExpert");
-                const data = await db.collection("Products").distinct('brand');
-                if (data) {
-                    client.close();
-                    return(
-                    res.status(200).json({
-                    status: 200,
-                    data: data,
-                    })
-                    )
-                }
-                else{
-                    client.close();
-                    return(
-                    res.status(400).json({
-                    status: 400
-                    })
-                    )
-                }
-            } catch (err) {
-                res.status(400).json({
-                    status: 400,
-                    message: "Bad Request",
-                });
-                }
-                
-        };
+const getBrands = async (req, res) => {
+    const client = new MongoClient(MONGO_URI, options);
+    try {
+        await client.connect();
+        const db = client.db("SkinExpert");
+        const data = await db.collection("Products").distinct('brand');
+        if (data) {
+            client.close();
+            return(
+            res.status(200).json({
+            status: 200,
+            data: data,
+            })
+            )
+        }
+        else{
+            client.close();
+            return(
+            res.status(400).json({
+            status: 400
+            })
+            )
+        }
+    } catch (err) {
+        res.status(400).json({
+            status: 400,
+            message: "Bad Request",
+        });
+        }
+        
+};
 
 //--
 
 const getPosts=async(req,res)=>{
+    const {name}=req.params;
     const client = new MongoClient(MONGO_URI, options);
 try { 
     await client.connect();
     const db = client.db("SkinExpert");
-    const data = await db.collection("Posts").find().toArray();
+    const data = await db.collection("Posts").find({name:name}).toArray();
     console.log(data);
     if (data) {
         client.close();
@@ -324,7 +325,6 @@ const addPost=async(req,res)=>{
     const client = new MongoClient(MONGO_URI, options);
     try {
         const newPost = req.body;
-        console.log(newPost);
         await client.connect();
         const db = client.db("SkinExpert");
         if(newPost!=null){
@@ -537,6 +537,31 @@ try {
     return res.status(400).json({ status: 400, message: "Invalid data!" });
   }
 }
+const addMessage2 = async (req, res) => {
+  const client = new MongoClient(MONGO_URI, options);
+  const {_id}=req.params;
+  const{activeUser}=req.params;
+try {
+  const item = req.body;
+  await client.connect();
+  const db = client.db("SkinExpert");
+  const data = await db.collection("Routine").updateOne({user:activeUser,"Dislike.item._id":_id},{$set:{"Dislike.$.message":item}});
+    if(data!=null){
+      client.close();
+      return res.status(200).json({
+          status: 200,
+          message: "Success",
+          data: data,
+      });
+    }
+    else{
+      client.close();
+      return res.status(400).json({ status: 400, message: "Data is null!" });
+    }
+  } catch (err) {
+    return res.status(400).json({ status: 400, message: "Invalid data!" });
+  }
+}
 
 const getRoutine=async(req,res)=>{
     const {activeUser}=req.params;
@@ -573,6 +598,6 @@ module.exports = {
     getUser,addUser,updateUser,
     getProducts,getProduct,getProductByCategory,getProductByConcern,getProductByBrand,
     getBrands,addCurrentRoutine,getRoutine,deleteIteminBin,deleteIteminBin2,deleteCurrentRoutine,
-    addMessage,
+    addMessage,addMessage2,
     getPosts,addPost
 };

@@ -27,10 +27,10 @@ const Profile=({users, user})=>{
                             <StyledP>Interested Products: </StyledP> 
                             {Object.values(users.typeOfProducts).map((type)=>{return <StyledP>{`${type},`}</StyledP>})}
                         </StyledRow>
-                        <button onClick={handleClick}>Edit Profile</button>
+                        <StyledButton onClick={handleClick}>Edit Profile</StyledButton>
                     </div>
                 </ProfileDiv>
-            <p>Current Routine</p>
+            <Styledh3>Current Routine</Styledh3>
             <CurrentRoutineDiv>
                 <CurrentRoutine/>
             </CurrentRoutineDiv>
@@ -77,6 +77,7 @@ padding-top: 10px;
 padding-bottom: 30px;
 border-bottom: 2px solid #abc4ff;
 border-top: 2px solid #abc4ff;
+padding-left:60px;
 `
 const StyledImg=styled.img`
 border-radius: 50%;
@@ -86,5 +87,16 @@ margin-top:60px;
 margin-right: 40px;
 `
 const Name = styled.h2`
+`
+const Styledh3=styled.h3`
+font-family: serif;
+`
+const StyledButton=styled.button`
+margin-left:600px;
+height:30px;
+width:100px;
+border: 3px solid #abc4ff;
+border-radius:10px;
+font-family: serif;
 `
 export default Profile;

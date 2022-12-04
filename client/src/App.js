@@ -14,7 +14,6 @@ import {DndProvider} from "react-dnd";
 import {HTML5Backend} from 'react-dnd-html5-backend';
 import EditProfile from "./components/EditProfile";
 import {useAuth0} from "@auth0/auth0-react";
-import LoadingPage from "./components/LoadingPage";
 import CreateAnAccount from "./components/CreateAccount";
 const App=()=> {
   const {user,isAuthenticated, isLoading}=useAuth0(); 
@@ -22,10 +21,8 @@ const App=()=> {
   useEffect(() => {
     if(isAuthenticated){
     fetch(`/users/${user.name}`)
-    // fetch('users/null')
     .then((res) => res.json())
     .then((data) => {
-      console.log(data.data);
         setActiveUser(data.data[0].name);
         setUsers(data.data[0]);
     })
@@ -46,7 +43,6 @@ const App=()=> {
           <Route path="/brands/:brand" element={<ProductFilterBrand/>}/>
           <Route path="/edit-profile" element={<EditProfile/>}/>
           <Route path="/createAccount" element={<CreateAnAccount/>}/>
-          {/* <Route path="/load" element={<LoadingPage/>}/> */}
         </Routes>
       </DndProvider>
       

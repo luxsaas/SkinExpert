@@ -73,18 +73,15 @@ const FavoriteBin=({id})=>{
     const handleChange=(e)=>{
         setNoteForm(e.target.value);
     }
-    
-    // console.log("Favorite", favorite);
-    // console.log("Array",favoriteArr );
 
     return(
         <Container>
-            <p>Favorites</p>
+            <Styledh3>Favorites</Styledh3>
             <Favorites ref={drop} style={{ backgroundColor: isOver ? '#c1d3fe' : '#edf2fb' }}  >
                 {favorite&&Object.values(favorite).map((item)=>{
                     if(item!=null){
                     return(
-                        <Notes item={item}  handleClick={handleClick} handleChange={handleChange} noteForm={noteForm} setNoteForm={setNoteForm}refresh={refresh} setRefresh={setRefresh}/>
+                        <Notes item={item}  handleClick={handleClick} handleChange={handleChange} noteForm={noteForm} setNoteForm={setNoteForm}refresh={refresh} setRefresh={setRefresh} key="Favorite"/>
                     )}
                 })}
             </Favorites>
@@ -93,9 +90,7 @@ const FavoriteBin=({id})=>{
 }
 
 const Container=styled.div`
-
 `
-
 const Favorites =styled.div`
 height:200px;
 width:500px;
@@ -105,6 +100,9 @@ justify-content: center;
 display:flex;
 flex-direction: row;
 
+`
+const Styledh3=styled.h3`
+font-family: serif;
 `
 
 export default FavoriteBin;

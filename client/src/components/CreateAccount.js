@@ -31,7 +31,7 @@ const CreateAnAccount =()=>{
         // .catch((error)=>{
         //     window.alert(error);
         // })
-        navigate("/home")
+        navigate("/home");
         window.location.reload();
     }
     const handleInput = (e) => {
@@ -74,7 +74,7 @@ const CreateAnAccount =()=>{
                     <InputDiv><input name="skinType"type="radio" value="Dry" onChange={handleInput}  ></input><label>Dry</label> </InputDiv>
                     <InputDiv><input name="skinType"type="radio"value="Combination" onChange={handleInput}  ></input><label>Combination</label> </InputDiv>
                     <InputDiv><input name="skinType"type="radio"value="Normal" onChange={handleInput}  ></input><label>Normal</label> </InputDiv>
-                    <button onClick={handleToggle1}>Next</button>
+                    <StyledButton onClick={handleToggle1}>Next</StyledButton>
                 </Step1>
                 <Step2 style={{display:step2?"block":"none"}}>
                     <h3>Step 2</h3>
@@ -87,7 +87,7 @@ const CreateAnAccount =()=>{
                     <InputDiv><input name="concerns"type="checkbox"value="Dullness" onChange={handleInput}  ></input><label>Dullness</label> </InputDiv>
                     <InputDiv><input name="concerns"type="checkbox"value="Dark Circles"onChange={handleInput}  ></input><label>Dark Circles</label> </InputDiv>
                     <InputDiv><input name="concerns"type="checkbox"value="Redness" onChange={handleInput}  ></input><label>Redness</label> </InputDiv>
-                    <button onClick={handleToggle2}>Next</button>
+                    <StyledButton onClick={handleToggle2}>Next</StyledButton>
                 </Step2>
                 <Step3 style={{display:step3?"block":"none"}}>
                     <h3>Step 3</h3>
@@ -99,7 +99,7 @@ const CreateAnAccount =()=>{
                     <InputDiv><input name="typeOfProducts"type="checkbox"value="Eye Care" onChange={handleInput} ></input><label>Eye Care</label> </InputDiv>
                     <InputDiv><input name="typeOfProducts"type="checkbox"value="Lip Care" onChange={handleInput} ></input><label>Lip Care</label> </InputDiv>
                     <InputDiv><input name="typeOfProducts"type="checkbox"value="Sun Care"onChange={handleInput} ></input><label>Sun Care</label> </InputDiv>
-                    <button onClick={handleSubmit}>Create Account</button>
+                    <StyledButton onClick={handleSubmit}>Create Account</StyledButton>
                 </Step3>
                
             </StyledDiv>
@@ -108,14 +108,19 @@ const CreateAnAccount =()=>{
 }
 const Container =styled.div`
 display:flex;
-flex-direction: row;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+height:800px;
+width:100%;
 background-color: #edf2fb;
-
 `
 const StyledDiv =styled.div`
 display: flex;
 flex-direction: column;
-
+justify-content: center;
+align-items: center;
+margin-top: -150px;
 `
 const InputDiv =styled.div`
 display: flex;
@@ -128,9 +133,11 @@ height:300px;
 display: flex;
 flex-direction: column;
 justify-content: center;
-padding-left: 150px;
-margin-left: 250px;
-margin-top:100px;
+align-items: center;
+padding-left: 50px;
+padding-right: 100px;
+padding-top: 20px;
+
 `
 const Step2 =styled.div`
 border: 3px solid #abc4ff;
@@ -139,9 +146,10 @@ height:300px;
 display: flex;
 flex-direction: column;
 justify-content: center;
-padding-left: 150px;
-margin-left: 250px;
-margin-top:100px;
+align-items: center;
+padding-left: 50px;
+padding-right: 100px;
+padding-top: 20px;
 `
 const Step3 =styled.div`
 border: 3px solid #abc4ff;
@@ -150,8 +158,16 @@ height:300px;
 display: flex;
 flex-direction: column;
 justify-content: center;
-padding-left: 150px;
-margin-left: 250px;
-margin-top:100px;
+align-items: center;
+padding-left: 50px;
+padding-right: 100px;
+padding-top: 20px;
+`
+const StyledButton=styled.button`
+
+border: 3px solid #abc4ff;
+border-radius:10px;
+margin-left:380px;
+padding:10px;
 `
 export default CreateAnAccount;

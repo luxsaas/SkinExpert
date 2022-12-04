@@ -4,7 +4,7 @@ import {BiNote} from "react-icons/bi";
 import {RiCloseFill} from "react-icons/ri"
 import { useState, useEffect, useContext } from "react";
 import { UserContext } from "../UserContext";
-const Notes=({item, handleClick,handleChange, noteForm, setNoteForm,refresh,setRefresh})=>{
+const Notes=({item, handleClick,handleChange, noteForm, setNoteForm,refresh,setRefresh,key})=>{
     const[isNoteVisible,setIsNoteVisible]=useState(false);
     const [toggle,setToggle]=useState(false);
     const {activeUser,setActiveUser}=useContext(UserContext);
@@ -31,21 +31,40 @@ const Notes=({item, handleClick,handleChange, noteForm, setNoteForm,refresh,setR
         else{
             setToggle(true);
         }
-        fetch(`/message/${activeUser}/${_id}`,{
-            method:"POST",
-            headers:{
-                "Accept":"application/json",
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({message:noteForm})
-        })
-        .then(res=>res.json())
-        .then((data)=>{
-            setRefresh(refresh+1);
-        })
-        .catch((error)=>{
-            window.alert(error);
-        })
+        if(key=="Favorite"){
+            fetch(`/message/${activeUser}/${_id}`,{
+                method:"POST",
+                headers:{
+                    "Accept":"application/json",
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({message:noteForm})
+            })
+            .then(res=>res.json())
+            .then((data)=>{
+                setRefresh(refresh+1);
+            })
+            .catch((error)=>{
+                window.alert(error);
+            })
+        }
+        else{
+            fetch(`/message2/${activeUser}/${_id}`,{
+                method:"POST",
+                headers:{
+                    "Accept":"application/json",
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({message:noteForm})
+            })
+            .then(res=>res.json())
+            .then((data)=>{
+                setRefresh(refresh+1);
+            })
+            .catch((error)=>{
+                window.alert(error);
+            })
+        }
 
     }
     return(

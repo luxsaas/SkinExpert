@@ -44,19 +44,18 @@ const ProductMenuItem=()=>{
       const idxOfLastItem=currentPage*itemsPerPage;
       const idxOfFirstItem=idxOfLastItem-itemsPerPage;
       const currentItems=items.slice(idxOfFirstItem,idxOfLastItem);
-console.log(currentItems&&items);
     return(
         <Container>
             <div>
             {(currentItems&&items)?<div>
                 <SearchBar/>
-                <p>Featured Products</p>
+                <Styledh3>Featured Products</Styledh3>
                 <p>{skin_concerns}</p>
             <StyledDiv>
+                
                 {Object.values(currentItems).map((item)=>{
                     const concerns=item.skin_concerns;
                     return (
-                        
                         <ProductDiv>
                             <Item href={`/products/detail/${item.id}`}>
                                 <ItemDiv>
@@ -79,6 +78,10 @@ console.log(currentItems&&items);
         </Container>
     )
 }
+const Styledh3=styled.h3`
+font-family: serif;
+font-weight: bold;
+`
 const Container =styled.div`
 display: flex;
 flex-direction: row;
