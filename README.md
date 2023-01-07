@@ -8,3 +8,11 @@
 Project is created with:
 * React
 * Node.js
+
+## Setup
+To run this project, install it locally using yarn:
+
+```
+$ yarn install
+$ yarn start
+```
