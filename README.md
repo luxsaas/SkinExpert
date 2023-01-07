@@ -20,7 +20,7 @@ $ yarn start
 ## Features
 
 *	Logging in from the front page
- *	Accept username and password to log in
+  *	Accept username and password to log in
  *	Sign up page if the user does not have an account
 *	Creating an account 
  *	Button available on the frontpage to create an account 
