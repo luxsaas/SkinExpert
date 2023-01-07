@@ -20,31 +20,31 @@ $ yarn start
 ## Features
 
 *	Logging in from the front page
-**	Accept username and password to log in
-**	Sign up page if the user does not have an account
+ *	Accept username and password to log in
+ *	Sign up page if the user does not have an account
 *	Creating an account 
-**	Button available on the frontpage to create an account 
-**	Fill in profile information once an account is made
-**	Start a quiz to create an account and take in record the user’s skin traits and concerns (ex: oily, dry, combination skin && dullness, acne-prone, mature)
-**	Skin type, skin concerns and categories
-**	Categories selected will recommend the product when the user views the details
+ *	Button available on the frontpage to create an account 
+ *	Fill in profile information once an account is made
+ *	Start a quiz to create an account and take in record the user’s skin traits and concerns (ex: oily, dry, combination skin && dullness, acne-prone, mature)
+ *	Skin type, skin concerns and categories
+ *	Categories selected will recommend the product when the user views the details
 * Profile Page /Main Page
-**	Display the information given from the quiz when creating an account. 
-**	Be able to modify the information on the profile page
-**	Display current skincare routine at the bottom. (Initialize to nothing at first)
-**	Displays Favorite products and unfavorite products (initialized to nothing at first)
-**	Be able to add your personal notes of the product in your favourites list. 
+ *	Display the information given from the quiz when creating an account. 
+ *	Be able to modify the information on the profile page
+ *	Display current skincare routine at the bottom. (Initialize to nothing at first)
+ *	Display Favorite products and unfavorite products (initialized to nothing at first)
+ *	Be able to add your personal notes of the product in your favourites list. 
 *	Nav Bar
-**	To get access to profile page, product page and community page
+ *	To get access to profile page, product page and community page
 *	Products Page 
-**	Displays Products 
-**	Display Submenus of the product categories 
-**	Submenu will categories the products within three categories (type, based on main ingredient, brand or by skin concern
-**	Search Bar 
-**	Products will have a button on the side to be able to add products to the current routine.
+ *	Displays Products 
+ *	Display Submenus of the product categories 
+ *	Submenu will categories the products within three categories (type, based on main ingredient, brand or by skin concern
+ *	Search Bar 
+ *	Products will have a button on the side to be able to add products to the current routine.
 *	Product Details
-**	Show information about the product
-**	Categories selected will recommend the product when the user views the details
+ *	Show information about the product
+ *	Categories selected will recommend the product when the user views the details
 
-![image](https://user-images.githubusercontent.com/112522997/211119840-4156456e-e3f7-452a-923e-5388e6d16898.png)
+
 
